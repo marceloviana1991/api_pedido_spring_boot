@@ -3,10 +3,7 @@ package pedidos.api.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pedidos.api.dto.pedido.DadosCadastroItem;
 import pedidos.api.dto.pedido.DadosCadastroPedido;
 import pedidos.api.dto.pedido.DadosDetalhamentoItem;
@@ -54,5 +51,20 @@ public class PedidoController {
             dadosDetalhamentoItemList.add(dadosDetalhamentoItem);
         }
         return new DadosDetalhamentoPedido(pedido, dadosDetalhamentoItemList);
+    }
+
+    @GetMapping
+    public List<DadosDetalhamentoPedido> listar() {
+        List<DadosDetalhamentoPedido> dadosDetalhamentoPedidoList = new ArrayList<>();
+        List<Pedido> pedidoList = pedidoRepository.findAll();
+        for (Pedido pedido: pedidoList) {
+            List<Item> itemList = itemRepository.findAllByPedido(pedido);
+            List<DadosDetalhamentoItem> dadosDetalhamentoItemList = new ArrayList<>();
+            for (Item item: itemList) {
+                dadosDetalhamentoItemList.add(new DadosDetalhamentoItem(item));
+            }
+            dadosDetalhamentoPedidoList.add(new DadosDetalhamentoPedido(pedido, dadosDetalhamentoItemList));
+        }
+        return dadosDetalhamentoPedidoList;
     }
 }

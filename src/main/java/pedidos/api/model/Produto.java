@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pedidos.api.dto.produto.DadosAtualizacaoProduto;
 import pedidos.api.dto.produto.DadosCadastroProduto;
 
 @Table(name = "produtos")
@@ -23,5 +24,10 @@ public class Produto {
     public Produto(DadosCadastroProduto dadosCadastroProduto) {
         this.nome = dadosCadastroProduto.nome();
         this.valor = dadosCadastroProduto.valor();
+    }
+
+    public void atualizarDados(DadosAtualizacaoProduto dadosAtualizacaoProduto) {
+        this.nome = (dadosAtualizacaoProduto.nome() != null) ? dadosAtualizacaoProduto.nome() : this.nome;
+        this.valor = (dadosAtualizacaoProduto.valor() != null) ? dadosAtualizacaoProduto.valor() : this.valor;
     }
 }

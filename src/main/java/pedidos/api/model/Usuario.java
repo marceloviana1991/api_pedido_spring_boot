@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pedidos.api.dto.usuario.DadosAtualizacaoUsuario;
 import pedidos.api.dto.usuario.DadosCadastroUsuario;
 
 @Table(name = "usuarios")
@@ -26,5 +27,10 @@ public class Usuario {
     public Usuario(DadosCadastroUsuario dadosCadastroUsuario) {
         this.login = dadosCadastroUsuario.login();
         this.senha = dadosCadastroUsuario.senha();
+    }
+
+    public void atualizarDados(DadosAtualizacaoUsuario dadosAtualizacaoUsuario) {
+        this.login = (dadosAtualizacaoUsuario.login() != null) ? dadosAtualizacaoUsuario.login() : this.login;
+        this.senha = (dadosAtualizacaoUsuario.senha() != null) ? dadosAtualizacaoUsuario.senha() : this.senha;
     }
 }

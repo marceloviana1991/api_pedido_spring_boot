@@ -1,8 +1,13 @@
 package pedidos.api.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+import pedidos.api.dto.usuario.DadosAtualizacaoUsuario;
 import pedidos.api.dto.usuario.DadosCadastroUsuario;
 import pedidos.api.dto.usuario.DadosDetalhamentoUsuario;
 import pedidos.api.model.Usuario;
@@ -19,19 +24,29 @@ public class UsuarioController {
 
     @PostMapping
     @Transactional
-    public DadosDetalhamentoUsuario cadastrar(@RequestBody DadosCadastroUsuario dadosCadastroUsuario) {
+    public ResponseEntity<DadosDetalhamentoUsuario> cadastrar(@Valid @RequestBody DadosCadastroUsuario dadosCadastroUsuario,
+                                              UriComponentsBuilder uriComponentsBuilder) {
         Usuario usuario = new Usuario(dadosCadastroUsuario);
         usuarioRepository.save(usuario);
-        return new DadosDetalhamentoUsuario(usuario);
+        var uri = uriComponentsBuilder.path("/produtos/{id}").buildAndExpand(usuario.getId()).toUri();
+        return ResponseEntity.created(uri).body(new DadosDetalhamentoUsuario(usuario));
     }
 
     @GetMapping
-    public List<DadosDetalhamentoUsuario> listar() {
-        return usuarioRepository.findAll().stream().map(DadosDetalhamentoUsuario::new).toList();
+    public ResponseEntity<List<DadosDetalhamentoUsuario>> listar(Pageable pageable) {
+        return ResponseEntity.ok(usuarioRepository.findAll(pageable).stream().map(DadosDetalhamentoUsuario::new).toList());
     }
 
     @GetMapping("/{id}")
-    public DadosDetalhamentoUsuario detalhar(@PathVariable Long id) {
-        return new DadosDetalhamentoUsuario(usuarioRepository.getReferenceById(id));
+    public ResponseEntity<DadosDetalhamentoUsuario> detalhar(@PathVariable Long id) {
+        return ResponseEntity.ok(new DadosDetalhamentoUsuario(usuarioRepository.getReferenceById(id)));
+    }
+
+    @PutMapping
+    @Transactional
+    public ResponseEntity<DadosDetalhamentoUsuario> atualizar(@Valid @RequestBody DadosAtualizacaoUsuario dadosAtualizacaoUsuario) {
+        Usuario usuario = usuarioRepository.getReferenceById(dadosAtualizacaoUsuario.id());
+        usuario.atualizarDados(dadosAtualizacaoUsuario);
+        return ResponseEntity.ok(new DadosDetalhamentoUsuario(usuario));
     }
 }

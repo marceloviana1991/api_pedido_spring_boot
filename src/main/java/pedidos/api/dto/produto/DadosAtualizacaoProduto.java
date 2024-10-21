@@ -1,12 +1,11 @@
 package pedidos.api.dto.produto;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record DadosCadastroProduto(
-        @NotBlank
-        String nome,
+public record DadosAtualizacaoProduto(
         @NotNull
+        Long id,
+        String nome,
         Double valor
 ) {
 }

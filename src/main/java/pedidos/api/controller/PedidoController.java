@@ -1,9 +1,14 @@
 package pedidos.api.controller;
 
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 import pedidos.api.dto.pedido.DadosCadastroItem;
 import pedidos.api.dto.pedido.DadosCadastroPedido;
 import pedidos.api.dto.pedido.DadosDetalhamentoItem;
@@ -38,7 +43,8 @@ public class PedidoController {
 
     @PostMapping
     @Transactional
-    public DadosDetalhamentoPedido cadastrar(@RequestBody DadosCadastroPedido dadosCadastroPedido) {
+    public ResponseEntity<DadosDetalhamentoPedido> cadastrar(
+            @Valid @RequestBody DadosCadastroPedido dadosCadastroPedido , UriComponentsBuilder uriComponentsBuilder) {
         Usuario usuario = usuarioRepository.getReferenceById(dadosCadastroPedido.idUsuario());
         Pedido pedido = new Pedido(usuario);
         pedidoRepository.save(pedido);
@@ -50,13 +56,14 @@ public class PedidoController {
             DadosDetalhamentoItem dadosDetalhamentoItem = new DadosDetalhamentoItem(item);
             dadosDetalhamentoItemList.add(dadosDetalhamentoItem);
         }
-        return new DadosDetalhamentoPedido(pedido, dadosDetalhamentoItemList);
+        var uri = uriComponentsBuilder.path("/pedidos/{id}").buildAndExpand(pedido.getId()).toUri();
+        return ResponseEntity.created(uri).body(new DadosDetalhamentoPedido(pedido, dadosDetalhamentoItemList));
     }
 
     @GetMapping
-    public List<DadosDetalhamentoPedido> listar() {
+    public ResponseEntity<List<DadosDetalhamentoPedido>> listar(Pageable pageable) {
         List<DadosDetalhamentoPedido> dadosDetalhamentoPedidoList = new ArrayList<>();
-        List<Pedido> pedidoList = pedidoRepository.findAll();
+        Page<Pedido> pedidoList = pedidoRepository.findAll(pageable);
         for (Pedido pedido: pedidoList) {
             List<Item> itemList = itemRepository.findAllByPedido(pedido);
             List<DadosDetalhamentoItem> dadosDetalhamentoItemList = new ArrayList<>();
@@ -65,22 +72,23 @@ public class PedidoController {
             }
             dadosDetalhamentoPedidoList.add(new DadosDetalhamentoPedido(pedido, dadosDetalhamentoItemList));
         }
-        return dadosDetalhamentoPedidoList;
+        return ResponseEntity.ok(dadosDetalhamentoPedidoList);
     }
 
     @GetMapping("/{id}")
-    public DadosDetalhamentoPedido detalhar(@PathVariable Long id) {
+    public ResponseEntity<DadosDetalhamentoPedido> detalhar(@PathVariable Long id) {
         Pedido pedido = pedidoRepository.getReferenceById(id);
         List<DadosDetalhamentoItem> dadosDetalhamentoItemList = itemRepository.findAllByPedido(pedido).stream()
                 .map(DadosDetalhamentoItem::new).toList();
-        return new DadosDetalhamentoPedido(pedido, dadosDetalhamentoItemList);
+        return ResponseEntity.ok(new DadosDetalhamentoPedido(pedido, dadosDetalhamentoItemList));
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public void excluir(@PathVariable Long id) {
+    public ResponseEntity<?> excluir(@PathVariable Long id) {
         Pedido pedido = pedidoRepository.getReferenceById(id);
         itemRepository.deleteAllByPedido(pedido);
         pedidoRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

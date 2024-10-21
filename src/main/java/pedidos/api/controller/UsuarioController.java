@@ -13,6 +13,8 @@ import pedidos.api.dto.usuario.DadosAtualizacaoUsuario;
 import pedidos.api.dto.usuario.DadosAutenticacaoUsuario;
 import pedidos.api.dto.usuario.DadosCadastroUsuario;
 import pedidos.api.dto.usuario.DadosDetalhamentoUsuario;
+import pedidos.api.infra.DadosTokenJWT;
+import pedidos.api.infra.TokenService;
 import pedidos.api.model.Usuario;
 import pedidos.api.repository.UsuarioRepository;
 
@@ -27,6 +29,9 @@ public class UsuarioController {
 
     @Autowired
     private AuthenticationManager manager;
+
+    @Autowired
+    private TokenService tokenService;
 
     @PostMapping
     @Transactional
@@ -58,9 +63,10 @@ public class UsuarioController {
 
     @PostMapping("/login")
     public ResponseEntity<?> efetuarLogin(@RequestBody @Valid DadosAutenticacaoUsuario dadosAutenticacaoUsuario) {
-        var token = new UsernamePasswordAuthenticationToken(dadosAutenticacaoUsuario.login(),
+        var authenticationToken = new UsernamePasswordAuthenticationToken(dadosAutenticacaoUsuario.login(),
                 dadosAutenticacaoUsuario.senha());
-        var authentication = manager.authenticate(token);
-        return ResponseEntity.ok().build();
+        var authentication = manager.authenticate(authenticationToken);
+        var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());
+        return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
     }
 }

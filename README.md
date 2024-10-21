@@ -1,5 +1,5 @@
 
-# API Rest de sistema de gerenciamento de cadasto de pedidos
+# API Rest de sistema de gerenciamento de cadastro de pedidos
 
 Olá, me chamo Marcelo Viana.
 

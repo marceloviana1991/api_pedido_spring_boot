@@ -6,8 +6,6 @@ import java.util.List;
 
 public record DadosCadastroPedido(
         @NotNull
-        Long idUsuario,
-        @NotNull
         List<DadosCadastroItem> itens
 ) {
 }

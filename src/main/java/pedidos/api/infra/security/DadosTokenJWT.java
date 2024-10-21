@@ -1,4 +1,4 @@
-package pedidos.api.infra;
+package pedidos.api.infra.security;
 
 public record DadosTokenJWT(String tokenJWT) {
 }

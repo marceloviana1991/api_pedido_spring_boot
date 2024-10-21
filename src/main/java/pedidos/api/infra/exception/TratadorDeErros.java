@@ -1,4 +1,4 @@
-package pedidos.api.infra;
+package pedidos.api.infra.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;

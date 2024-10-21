@@ -1,6 +1,7 @@
 package pedidos.api.controller;
 
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,7 @@ import pedidos.api.dto.pedido.DadosCadastroItem;
 import pedidos.api.dto.pedido.DadosCadastroPedido;
 import pedidos.api.dto.pedido.DadosDetalhamentoItem;
 import pedidos.api.dto.pedido.DadosDetalhamentoPedido;
+import pedidos.api.infra.security.TokenService;
 import pedidos.api.model.Item;
 import pedidos.api.model.Pedido;
 import pedidos.api.model.Produto;
@@ -41,11 +43,18 @@ public class PedidoController {
     @Autowired
     private PedidoRepository pedidoRepository;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping
     @Transactional
     public ResponseEntity<DadosDetalhamentoPedido> cadastrar(
-            @Valid @RequestBody DadosCadastroPedido dadosCadastroPedido , UriComponentsBuilder uriComponentsBuilder) {
-        Usuario usuario = usuarioRepository.getReferenceById(dadosCadastroPedido.idUsuario());
+            @Valid @RequestBody DadosCadastroPedido dadosCadastroPedido , UriComponentsBuilder uriComponentsBuilder,
+            HttpServletRequest request) {
+        var authorizationHeader = request.getHeader("Authorization");
+        var tokenJWT = authorizationHeader.replace("Bearer ", "");
+        var subject = tokenService.getSubject(tokenJWT);
+        Usuario usuario = (Usuario) usuarioRepository.findByLogin(subject);
         Pedido pedido = new Pedido(usuario);
         pedidoRepository.save(pedido);
         List<DadosDetalhamentoItem> dadosDetalhamentoItemList = new ArrayList<>();

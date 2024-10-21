@@ -29,4 +29,9 @@ public class UsuarioController {
     public List<DadosDetalhamentoUsuario> listar() {
         return usuarioRepository.findAll().stream().map(DadosDetalhamentoUsuario::new).toList();
     }
+
+    @GetMapping("/{id}")
+    public DadosDetalhamentoUsuario detalhar(@PathVariable Long id) {
+        return new DadosDetalhamentoUsuario(usuarioRepository.getReferenceById(id));
+    }
 }

@@ -29,4 +29,9 @@ public class ProdutoController {
     public List<DadosDetalhamentoProduto> listar() {
         return produtoRepository.findAll().stream().map(DadosDetalhamentoProduto::new).toList();
     }
+
+    @GetMapping("/{id}")
+    public DadosDetalhamentoProduto detalhar(@PathVariable Long id) {
+        return new DadosDetalhamentoProduto(produtoRepository.getReferenceById(id));
+    }
 }

@@ -67,4 +67,20 @@ public class PedidoController {
         }
         return dadosDetalhamentoPedidoList;
     }
+
+    @GetMapping("/{id}")
+    public DadosDetalhamentoPedido detalhar(@PathVariable Long id) {
+        Pedido pedido = pedidoRepository.getReferenceById(id);
+        List<DadosDetalhamentoItem> dadosDetalhamentoItemList = itemRepository.findAllByPedido(pedido).stream()
+                .map(DadosDetalhamentoItem::new).toList();
+        return new DadosDetalhamentoPedido(pedido, dadosDetalhamentoItemList);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void excluir(@PathVariable Long id) {
+        Pedido pedido = pedidoRepository.getReferenceById(id);
+        itemRepository.deleteAllByPedido(pedido);
+        pedidoRepository.deleteById(id);
+    }
 }

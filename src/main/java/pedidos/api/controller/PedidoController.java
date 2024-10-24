@@ -14,6 +14,7 @@ import pedidos.api.dto.pedido.DadosCadastroItem;
 import pedidos.api.dto.pedido.DadosCadastroPedido;
 import pedidos.api.dto.pedido.DadosDetalhamentoItem;
 import pedidos.api.dto.pedido.DadosDetalhamentoPedido;
+import pedidos.api.infra.exception.ValidacaoException;
 import pedidos.api.infra.security.TokenService;
 import pedidos.api.model.Item;
 import pedidos.api.model.Pedido;
@@ -26,6 +27,7 @@ import pedidos.api.repository.UsuarioRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/pedidos")
@@ -85,8 +87,15 @@ public class PedidoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DadosDetalhamentoPedido> detalhar(@PathVariable Long id) {
+    public ResponseEntity<DadosDetalhamentoPedido> detalhar(@PathVariable Long id, HttpServletRequest request) {
+        var authorizationHeader = request.getHeader("Authorization");
+        var tokenJWT = authorizationHeader.replace("Bearer ", "");
+        var subject = tokenService.getSubject(tokenJWT);
+        Usuario usuario = (Usuario) usuarioRepository.findByLogin(subject);
         Pedido pedido = pedidoRepository.getReferenceById(id);
+        if (!Objects.equals(usuario, pedido.getUsuario())) {
+            throw new ValidacaoException("Esse pedido não pertence ao usuário logado!");
+        }
         List<DadosDetalhamentoItem> dadosDetalhamentoItemList = itemRepository.findAllByPedido(pedido).stream()
                 .map(DadosDetalhamentoItem::new).toList();
         return ResponseEntity.ok(new DadosDetalhamentoPedido(pedido, dadosDetalhamentoItemList));

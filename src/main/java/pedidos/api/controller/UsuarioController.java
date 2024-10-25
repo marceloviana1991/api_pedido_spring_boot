@@ -14,7 +14,7 @@ import pedidos.api.dto.usuario.DadosAutenticacaoUsuario;
 import pedidos.api.dto.usuario.DadosCadastroUsuario;
 import pedidos.api.dto.usuario.DadosDetalhamentoUsuario;
 import pedidos.api.infra.security.DadosTokenJWT;
-import pedidos.api.infra.security.TokenService;
+import pedidos.api.service.security.TokenService;
 import pedidos.api.model.Usuario;
 import pedidos.api.repository.UsuarioRepository;
 

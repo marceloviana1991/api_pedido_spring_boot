@@ -15,7 +15,7 @@ import pedidos.api.dto.pedido.DadosCadastroPedido;
 import pedidos.api.dto.pedido.DadosDetalhamentoItem;
 import pedidos.api.dto.pedido.DadosDetalhamentoPedido;
 import pedidos.api.infra.exception.ValidacaoException;
-import pedidos.api.infra.security.TokenService;
+import pedidos.api.service.pedido.PedidoService;
 import pedidos.api.model.*;
 import pedidos.api.repository.*;
 
@@ -28,38 +28,26 @@ import java.util.Objects;
 public class PedidoController {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private ProdutoRepository produtoRepository;
-
-    @Autowired
     private ItemRepository itemRepository;
 
     @Autowired
     private PedidoRepository pedidoRepository;
 
     @Autowired
-    private TokenService tokenService;
+    private PedidoService pedidoService;
 
     @PostMapping
     @Transactional
     public ResponseEntity<DadosDetalhamentoPedido> cadastrar(
             @Valid @RequestBody DadosCadastroPedido dadosCadastroPedido , UriComponentsBuilder uriComponentsBuilder,
             HttpServletRequest request) {
-        var authorizationHeader = request.getHeader("Authorization");
-        var tokenJWT = authorizationHeader.replace("Bearer ", "");
-        var subject = tokenService.getSubject(tokenJWT);
-        Usuario usuario = (Usuario) usuarioRepository.findByLogin(subject);
+        Usuario usuario = pedidoService.capturarUsuarioLogado(request);
         Pedido pedido = new Pedido(usuario);
         pedidoRepository.save(pedido);
         List<DadosDetalhamentoItem> dadosDetalhamentoItemList = new ArrayList<>();
         for (DadosCadastroItem dadosCadastroItem: dadosCadastroPedido.itens()) {
-            Produto produto = produtoRepository.getReferenceById(dadosCadastroItem.idProduto());
-            if (dadosCadastroItem.quantidade() > produto.getQuantidadeEmEstoque()) {
-                throw new ValidacaoException("Produto não está disponível em estoque!");
-            }
-            produto.retirarEmEstoque(dadosCadastroItem.quantidade());
+            Produto produto = pedidoService.retirarProdutoEmEstoque(dadosCadastroItem.idProduto(),
+                    dadosCadastroItem.quantidade());
             Item item = new Item(dadosCadastroItem,pedido,produto);
             itemRepository.save(item);
             DadosDetalhamentoItem dadosDetalhamentoItem = new DadosDetalhamentoItem(item);
@@ -86,12 +74,9 @@ public class PedidoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<DadosDetalhamentoPedido> detalhar(@PathVariable Long id, HttpServletRequest request) {
-        var authorizationHeader = request.getHeader("Authorization");
-        var tokenJWT = authorizationHeader.replace("Bearer ", "");
-        var subject = tokenService.getSubject(tokenJWT);
-        Usuario usuario = (Usuario) usuarioRepository.findByLogin(subject);
+        Usuario usuario = pedidoService.capturarUsuarioLogado(request);
         Pedido pedido = pedidoRepository.getReferenceById(id);
-        if (!Objects.equals(usuario, pedido.getUsuario())) {
+        if (!Objects.equals(usuario, pedido.getUsuario()) && usuario.getTipoUsuario() == TipoUsuario.USER) {
             throw new ValidacaoException("Esse pedido não pertence ao usuário logado!");
         }
         List<DadosDetalhamentoItem> dadosDetalhamentoItemList = itemRepository.findAllByPedido(pedido).stream()

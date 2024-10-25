@@ -5,13 +5,15 @@ import pedidos.api.model.Produto;
 public record DadosDetalhamentoProduto(
         Long id,
         String nome,
-        Double valor
+        Double valor,
+        Integer quantidadeEmEstoque
 ) {
     public DadosDetalhamentoProduto(Produto produto) {
         this(
                 produto.getId(),
                 produto.getNome(),
-                produto.getValor()
+                produto.getValor(),
+                produto.getQuantidadeEmEstoque()
         );
     }
 }

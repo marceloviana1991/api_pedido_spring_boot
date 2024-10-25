@@ -20,14 +20,24 @@ public class Produto {
     private Long id;
     private String nome;
     private Double valor;
+    private Integer quantidadeEmEstoque;
 
     public Produto(DadosCadastroProduto dadosCadastroProduto) {
         this.nome = dadosCadastroProduto.nome();
         this.valor = dadosCadastroProduto.valor();
+        this.quantidadeEmEstoque = 0;
     }
 
     public void atualizarDados(DadosAtualizacaoProduto dadosAtualizacaoProduto) {
         this.nome = (dadosAtualizacaoProduto.nome() != null) ? dadosAtualizacaoProduto.nome() : this.nome;
         this.valor = (dadosAtualizacaoProduto.valor() != null) ? dadosAtualizacaoProduto.valor() : this.valor;
+    }
+
+    public void adicionarEmEstoque(Integer quantidadeAdicionada) {
+        this.quantidadeEmEstoque = this.quantidadeEmEstoque + quantidadeAdicionada;
+    }
+
+    public void retirarEmEstoque(Integer quantidadeRetirada) {
+        this.quantidadeEmEstoque = this.quantidadeEmEstoque - quantidadeRetirada;
     }
 }

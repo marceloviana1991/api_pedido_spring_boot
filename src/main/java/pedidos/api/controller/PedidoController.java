@@ -42,9 +42,6 @@ public class PedidoController {
     @Autowired
     private TokenService tokenService;
 
-    @Autowired
-    private ProdutoEstoqueRepository produtoEstoqueRepository;
-
     @PostMapping
     @Transactional
     public ResponseEntity<DadosDetalhamentoPedido> cadastrar(
@@ -59,11 +56,10 @@ public class PedidoController {
         List<DadosDetalhamentoItem> dadosDetalhamentoItemList = new ArrayList<>();
         for (DadosCadastroItem dadosCadastroItem: dadosCadastroPedido.itens()) {
             Produto produto = produtoRepository.getReferenceById(dadosCadastroItem.idProduto());
-            ProdutoEstoque produtoEstoque = produtoEstoqueRepository.getReferenceByProduto(produto);
-            if (dadosCadastroItem.quantidade() > produtoEstoque.getQuantidade()) {
+            if (dadosCadastroItem.quantidade() > produto.getQuantidadeEmEstoque()) {
                 throw new ValidacaoException("Produto não está disponível em estoque!");
             }
-            produtoEstoque.retirarEmEstoque(dadosCadastroItem.quantidade());
+            produto.retirarEmEstoque(dadosCadastroItem.quantidade());
             Item item = new Item(dadosCadastroItem,pedido,produto);
             itemRepository.save(item);
             DadosDetalhamentoItem dadosDetalhamentoItem = new DadosDetalhamentoItem(item);

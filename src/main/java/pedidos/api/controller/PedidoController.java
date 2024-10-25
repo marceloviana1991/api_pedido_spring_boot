@@ -16,14 +16,8 @@ import pedidos.api.dto.pedido.DadosDetalhamentoItem;
 import pedidos.api.dto.pedido.DadosDetalhamentoPedido;
 import pedidos.api.infra.exception.ValidacaoException;
 import pedidos.api.infra.security.TokenService;
-import pedidos.api.model.Item;
-import pedidos.api.model.Pedido;
-import pedidos.api.model.Produto;
-import pedidos.api.model.Usuario;
-import pedidos.api.repository.ItemRepository;
-import pedidos.api.repository.PedidoRepository;
-import pedidos.api.repository.ProdutoRepository;
-import pedidos.api.repository.UsuarioRepository;
+import pedidos.api.model.*;
+import pedidos.api.repository.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +42,9 @@ public class PedidoController {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private ProdutoEstoqueRepository produtoEstoqueRepository;
+
     @PostMapping
     @Transactional
     public ResponseEntity<DadosDetalhamentoPedido> cadastrar(
@@ -62,6 +59,11 @@ public class PedidoController {
         List<DadosDetalhamentoItem> dadosDetalhamentoItemList = new ArrayList<>();
         for (DadosCadastroItem dadosCadastroItem: dadosCadastroPedido.itens()) {
             Produto produto = produtoRepository.getReferenceById(dadosCadastroItem.idProduto());
+            ProdutoEstoque produtoEstoque = produtoEstoqueRepository.getReferenceByProduto(produto);
+            if (dadosCadastroItem.quantidade() > produtoEstoque.getQuantidade()) {
+                throw new ValidacaoException("Produto não está disponível em estoque!");
+            }
+            produtoEstoque.retirarEmEstoque(dadosCadastroItem.quantidade());
             Item item = new Item(dadosCadastroItem,pedido,produto);
             itemRepository.save(item);
             DadosDetalhamentoItem dadosDetalhamentoItem = new DadosDetalhamentoItem(item);

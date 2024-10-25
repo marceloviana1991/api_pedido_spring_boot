@@ -1,7 +1,7 @@
 create table usuarios(
 
     id bigint not null auto_increment,
-    login varchar(100) not null,
+    login varchar(100) not null unique,
     senha varchar(250) not null,
     tipo_usuario varchar(100) not null,
 

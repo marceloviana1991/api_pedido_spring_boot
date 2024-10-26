@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import pedidos.api.dto.produto.DadosAtualizacaoProduto;
 import pedidos.api.dto.produto.DadosCadastroProduto;
 
+import java.time.LocalDateTime;
+
 @Table(name = "produtos")
 @Entity(name = "Produto")
 @Getter
@@ -21,16 +23,26 @@ public class Produto {
     private String nome;
     private Double valor;
     private Integer quantidadeEmEstoque;
+    private LocalDateTime dataDeCadastro;
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
 
-    public Produto(DadosCadastroProduto dadosCadastroProduto) {
+    public Produto(DadosCadastroProduto dadosCadastroProduto, Usuario usuario) {
         this.nome = dadosCadastroProduto.nome();
         this.valor = dadosCadastroProduto.valor();
+        this.dataDeCadastro = LocalDateTime.now();
+        this.usuario = usuario;
         this.quantidadeEmEstoque = 0;
     }
 
-    public void atualizarDados(DadosAtualizacaoProduto dadosAtualizacaoProduto) {
+    public void atualizarDados(DadosAtualizacaoProduto dadosAtualizacaoProduto, Usuario usuario) {
         this.nome = (dadosAtualizacaoProduto.nome() != null) ? dadosAtualizacaoProduto.nome() : this.nome;
         this.valor = (dadosAtualizacaoProduto.valor() != null) ? dadosAtualizacaoProduto.valor() : this.valor;
+        if (dadosAtualizacaoProduto.nome() != null || dadosAtualizacaoProduto.valor() != null) {
+            this.dataDeCadastro = LocalDateTime.now();
+            this.usuario = usuario;
+        }
     }
 
     public void adicionarEmEstoque(Integer quantidadeAdicionada) {

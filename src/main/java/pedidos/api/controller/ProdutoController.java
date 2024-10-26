@@ -1,5 +1,6 @@
 package pedidos.api.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +13,9 @@ import pedidos.api.dto.produto.DadosCadastroProduto;
 import pedidos.api.dto.produto.DadosDetalhamentoProduto;
 import pedidos.api.dto.produto.estoque.DadosCadastroProdutoEstoque;
 import pedidos.api.model.Produto;
+import pedidos.api.model.Usuario;
 import pedidos.api.repository.ProdutoRepository;
+import pedidos.api.service.entity.ProdutoService;
 
 import java.util.List;
 
@@ -23,11 +26,15 @@ public class ProdutoController {
     @Autowired
     private ProdutoRepository produtoRepository;
 
+    @Autowired
+    private ProdutoService produtoService;
+
     @PostMapping
     @Transactional
     public ResponseEntity<DadosDetalhamentoProduto> cadastrar(@Valid @RequestBody DadosCadastroProduto dadosCadastroProduto,
-                                              UriComponentsBuilder uriComponentsBuilder) {
-        Produto produto = new Produto(dadosCadastroProduto);
+                                              UriComponentsBuilder uriComponentsBuilder, HttpServletRequest request) {
+        Usuario usuario = produtoService.capturarUsuarioLogado(request);
+        Produto produto = new Produto(dadosCadastroProduto, usuario);
         produtoRepository.save(produto);
         var uri = uriComponentsBuilder.path("/produtos/{id}").buildAndExpand(produto.getId()).toUri();
         return ResponseEntity.created(uri).body(new DadosDetalhamentoProduto(produto));
@@ -56,9 +63,10 @@ public class ProdutoController {
     @PutMapping
     @Transactional
     public ResponseEntity<DadosDetalhamentoProduto> atualizar(
-            @Valid @RequestBody DadosAtualizacaoProduto dadosAtualizacaoProduto) {
+            @Valid @RequestBody DadosAtualizacaoProduto dadosAtualizacaoProduto, HttpServletRequest request) {
+        Usuario usuario = produtoService.capturarUsuarioLogado(request);
         Produto produto = produtoRepository.getReferenceById(dadosAtualizacaoProduto.id());
-        produto.atualizarDados(dadosAtualizacaoProduto);
+        produto.atualizarDados(dadosAtualizacaoProduto, usuario);
         return ResponseEntity.ok(new DadosDetalhamentoProduto(produto));
     }
 }

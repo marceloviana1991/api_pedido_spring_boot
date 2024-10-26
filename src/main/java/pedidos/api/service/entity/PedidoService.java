@@ -1,4 +1,4 @@
-package pedidos.api.service.pedido;
+package pedidos.api.service.entity;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,26 +21,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class PedidoService {
-
-    @Autowired
-    private TokenService tokenService;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+public class PedidoService extends EntityService {
 
     @Autowired
     private ProdutoRepository produtoRepository;
 
     @Autowired
     private ItemRepository itemRepository;
-
-
-    public Usuario capturarUsuarioLogado(HttpServletRequest request) {
-        var tokenJWT = tokenService.recuperarToken(request);
-        var subject = tokenService.getSubject(tokenJWT);
-        return (Usuario) usuarioRepository.findByLogin(subject);
-    }
 
     public Produto retirarProdutoEmEstoque(Long idProduto, Integer quantidadeRetirada) {
         Produto produto = produtoRepository.getReferenceById(idProduto);

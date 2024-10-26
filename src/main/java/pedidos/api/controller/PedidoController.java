@@ -13,7 +13,7 @@ import pedidos.api.dto.pedido.DadosCadastroPedido;
 import pedidos.api.dto.pedido.DadosDetalhamentoItem;
 import pedidos.api.dto.pedido.DadosDetalhamentoPedido;
 import pedidos.api.infra.exception.ValidacaoException;
-import pedidos.api.service.pedido.PedidoService;
+import pedidos.api.service.entity.PedidoService;
 import pedidos.api.model.*;
 import pedidos.api.repository.*;
 

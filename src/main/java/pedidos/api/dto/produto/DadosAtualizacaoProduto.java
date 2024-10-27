@@ -6,6 +6,7 @@ public record DadosAtualizacaoProduto(
         @NotNull
         Long id,
         String nome,
-        Double valor
+        Double valor,
+        Integer quantidadeEmEstoque
 ) {
 }

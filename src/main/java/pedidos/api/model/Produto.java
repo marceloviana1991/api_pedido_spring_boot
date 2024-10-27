@@ -39,6 +39,8 @@ public class Produto {
     public void atualizarDados(DadosAtualizacaoProduto dadosAtualizacaoProduto, Usuario usuario) {
         this.nome = (dadosAtualizacaoProduto.nome() != null) ? dadosAtualizacaoProduto.nome() : this.nome;
         this.valor = (dadosAtualizacaoProduto.valor() != null) ? dadosAtualizacaoProduto.valor() : this.valor;
+        this.quantidadeEmEstoque = (dadosAtualizacaoProduto.quantidadeEmEstoque() != null) ?
+                dadosAtualizacaoProduto.quantidadeEmEstoque() : this.getQuantidadeEmEstoque();
         if (dadosAtualizacaoProduto.nome() != null || dadosAtualizacaoProduto.valor() != null) {
             this.dataDeCadastro = LocalDateTime.now();
             this.usuario = usuario;

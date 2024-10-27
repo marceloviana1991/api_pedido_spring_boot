@@ -5,15 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import pedidos.api.dto.usuario.DadosAtualizacaoUsuario;
-import pedidos.api.dto.usuario.DadosAutenticacaoUsuario;
 import pedidos.api.dto.usuario.DadosCadastroUsuario;
 import pedidos.api.dto.usuario.DadosDetalhamentoUsuario;
-import pedidos.api.infra.security.DadosTokenJWT;
 import pedidos.api.service.security.TokenService;
 import pedidos.api.model.Usuario;
 import pedidos.api.repository.UsuarioRepository;
@@ -26,12 +23,6 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private AuthenticationManager manager;
-
-    @Autowired
-    private TokenService tokenService;
 
     @PostMapping
     @Transactional
@@ -61,12 +52,4 @@ public class UsuarioController {
         return ResponseEntity.ok(new DadosDetalhamentoUsuario(usuario));
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> efetuarLogin(@RequestBody @Valid DadosAutenticacaoUsuario dadosAutenticacaoUsuario) {
-        var authenticationToken = new UsernamePasswordAuthenticationToken(dadosAutenticacaoUsuario.login(),
-                dadosAutenticacaoUsuario.senha());
-        var authentication = manager.authenticate(authenticationToken);
-        var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());
-        return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
-    }
 }

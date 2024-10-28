@@ -31,6 +31,8 @@ public class Usuario implements UserDetails {
     private String senha;
     @Enumerated(EnumType.STRING)
     private TipoUsuario tipoUsuario = TipoUsuario.USER;
+    @Enumerated(EnumType.STRING)
+    private SituacaoUsuario situacaoUsuario = SituacaoUsuario.PENDENTE;
 
     public Usuario(DadosCadastroUsuario dadosCadastroUsuario) {
         this.login = dadosCadastroUsuario.login();
@@ -47,10 +49,12 @@ public class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.tipoUsuario == TipoUsuario.ADMIN) {
+        if(this.tipoUsuario == TipoUsuario.ADMIN && this.situacaoUsuario == SituacaoUsuario.ATIVO) {
             return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        } else if (this.situacaoUsuario == SituacaoUsuario.ATIVO) {
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
         }
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return null;
     }
 
     @Override
@@ -61,5 +65,10 @@ public class Usuario implements UserDetails {
     @Override
     public String getUsername() {
         return this.login;
+    }
+
+
+    public void ativarCadastro() {
+        this.situacaoUsuario = SituacaoUsuario.ATIVO;
     }
 }

@@ -12,6 +12,7 @@ import pedidos.api.dto.usuario.DadosCadastroUsuario;
 import pedidos.api.dto.usuario.DadosDetalhamentoUsuario;
 import pedidos.api.model.Usuario;
 import pedidos.api.repository.UsuarioRepository;
+import pedidos.api.service.entity.UsuarioService;
 
 import java.util.List;
 
@@ -22,6 +23,9 @@ public class UsuarioController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     @PostMapping
     @Transactional
     public ResponseEntity<DadosDetalhamentoUsuario> cadastrar(@Valid @RequestBody DadosCadastroUsuario dadosCadastroUsuario,
@@ -29,7 +33,18 @@ public class UsuarioController {
         Usuario usuario = new Usuario(dadosCadastroUsuario);
         usuarioRepository.save(usuario);
         var uri = uriComponentsBuilder.path("/produtos/{id}").buildAndExpand(usuario.getId()).toUri();
+        usuarioService.enviarEmailDeVerificacao(usuario);
         return ResponseEntity.created(uri).body(new DadosDetalhamentoUsuario(usuario));
+    }
+
+    @GetMapping("/verificar/{uuid}")
+    @Transactional
+    public ResponseEntity<DadosDetalhamentoUsuario> verificarCadastro(@PathVariable String uuid) {
+        Usuario usuario = usuarioService.ativarCadastroUsuario(uuid, usuarioRepository);
+        if (usuario != null) {
+            return ResponseEntity.ok(new DadosDetalhamentoUsuario(usuario));
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping

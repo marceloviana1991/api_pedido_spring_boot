@@ -33,7 +33,9 @@ public class UsuarioService {
         UsuarioVerificador verificador = usuarioVerificadorRepository.findByUuid(UUID.fromString(uuid));
         if (verificador.getDataExpiracao().compareTo(Instant.now()) >= 0) {
             verificador.getUsuario().ativarCadastro();
-            return verificador.getUsuario();
+            Usuario usuario = verificador.getUsuario();
+            usuarioVerificadorRepository.delete(verificador);
+            return usuario;
         }
         Usuario usuario = verificador.getUsuario();
         usuarioVerificadorRepository.delete(verificador);

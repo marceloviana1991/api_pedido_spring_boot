@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import pedidos.api.dto.DadosMensagemGenerica;
 import pedidos.api.dto.usuario.DadosAtualizacaoUsuario;
 import pedidos.api.dto.usuario.DadosCadastroUsuario;
 import pedidos.api.dto.usuario.DadosDetalhamentoUsuario;
@@ -39,12 +40,12 @@ public class UsuarioController {
 
     @GetMapping("/verificar/{uuid}")
     @Transactional
-    public ResponseEntity<DadosDetalhamentoUsuario> verificarCadastro(@PathVariable String uuid) {
+    public ResponseEntity<?> verificarCadastro(@PathVariable String uuid) {
         Usuario usuario = usuarioService.ativarCadastroUsuario(uuid, usuarioRepository);
         if (usuario != null) {
             return ResponseEntity.ok(new DadosDetalhamentoUsuario(usuario));
         }
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(new DadosMensagemGenerica("Tempo de ativação expirado."));
     }
 
     @GetMapping
@@ -64,5 +65,7 @@ public class UsuarioController {
         usuario.atualizarDados(dadosAtualizacaoUsuario);
         return ResponseEntity.ok(new DadosDetalhamentoUsuario(usuario));
     }
+
+
 
 }

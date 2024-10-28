@@ -45,7 +45,7 @@ public class UsuarioController {
         if (usuario != null) {
             return ResponseEntity.ok(new DadosDetalhamentoUsuario(usuario));
         }
-        return ResponseEntity.ok(new DadosMensagemGenerica("Tempo de ativação expirado."));
+        return ResponseEntity.badRequest().body(new DadosMensagemGenerica("Tempo de ativação expirado."));
     }
 
     @GetMapping

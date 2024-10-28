@@ -26,6 +26,7 @@ public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String email;
     private String login;
     private String senha;
     @Enumerated(EnumType.STRING)
@@ -34,12 +35,14 @@ public class Usuario implements UserDetails {
     public Usuario(DadosCadastroUsuario dadosCadastroUsuario) {
         this.login = dadosCadastroUsuario.login();
         this.senha = new BCryptPasswordEncoder().encode(dadosCadastroUsuario.senha());
+        this.email = dadosCadastroUsuario.email();
     }
 
     public void atualizarDados(DadosAtualizacaoUsuario dadosAtualizacaoUsuario) {
         this.login = (dadosAtualizacaoUsuario.login() != null) ? dadosAtualizacaoUsuario.login() : this.login;
         this.senha = (dadosAtualizacaoUsuario.senha() != null) ?
                 new BCryptPasswordEncoder().encode(dadosAtualizacaoUsuario.senha()) : this.senha;
+        this.email = (dadosAtualizacaoUsuario.email() != null) ? dadosAtualizacaoUsuario.email() : this.email;
     }
 
     @Override

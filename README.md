@@ -11,6 +11,3 @@ Imagem do projeto representado por DER.
 
 Além do sistema de gerenciamento de pedidos, o código fonte contém implementação de conceitos de qualidade de software baseados nos princípios SOLID e implementação de um sistema de segurança que contém gerenciamento de acesso multicamada com níveis de permissões de acesso diferentes para usuário comum e usuário administrador.
 
-Imagem do projeto representado por DER, após implementação de nova funcionalidade.
-
-![DER2](imagens/der2.png)

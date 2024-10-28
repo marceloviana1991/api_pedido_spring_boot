@@ -6,12 +6,14 @@ import pedidos.api.model.Usuario;
 public record DadosDetalhamentoUsuario(
         Long id,
         String login,
+        String email,
         TipoUsuario tipoUsuario
 ) {
     public DadosDetalhamentoUsuario(Usuario usuario) {
         this(
                 usuario.getId(),
                 usuario.getLogin(),
+                usuario.getEmail(),
                 usuario.getTipoUsuario()
         );
     }

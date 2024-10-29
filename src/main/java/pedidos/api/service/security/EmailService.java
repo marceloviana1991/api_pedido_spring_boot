@@ -23,7 +23,7 @@ public class EmailService {
             simpleMailMessage.setSubject(assunto);
             simpleMailMessage.setText(mensagem);
             javaMailSender.send(simpleMailMessage);
-            return "Email enviado";
+            return "Email de validação enviado para: " + destinatario;
         } catch (Exception e) {
             return "Erro ao tentar enviar email "+ e.getLocalizedMessage();
         }

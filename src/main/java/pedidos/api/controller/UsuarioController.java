@@ -6,10 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
-import pedidos.api.dto.DadosMensagemGenerica;
 import pedidos.api.dto.usuario.DadosAtualizacaoUsuario;
-import pedidos.api.dto.usuario.DadosCadastroUsuario;
 import pedidos.api.dto.usuario.DadosDetalhamentoUsuario;
 import pedidos.api.model.Usuario;
 import pedidos.api.repository.UsuarioRepository;
@@ -26,27 +23,6 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
-
-    @PostMapping
-    @Transactional
-    public ResponseEntity<DadosDetalhamentoUsuario> cadastrar(@Valid @RequestBody DadosCadastroUsuario dadosCadastroUsuario,
-                                              UriComponentsBuilder uriComponentsBuilder) {
-        Usuario usuario = new Usuario(dadosCadastroUsuario);
-        usuarioRepository.save(usuario);
-        var uri = uriComponentsBuilder.path("/produtos/{id}").buildAndExpand(usuario.getId()).toUri();
-        usuarioService.enviarEmailDeVerificacao(usuario);
-        return ResponseEntity.created(uri).body(new DadosDetalhamentoUsuario(usuario));
-    }
-
-    @GetMapping("/verificar/{uuid}")
-    @Transactional
-    public ResponseEntity<?> verificarCadastro(@PathVariable String uuid) {
-        Usuario usuario = usuarioService.ativarCadastroUsuario(uuid, usuarioRepository);
-        if (usuario != null) {
-            return ResponseEntity.ok(new DadosDetalhamentoUsuario(usuario));
-        }
-        return ResponseEntity.badRequest().body(new DadosMensagemGenerica("Tempo de ativação expirado."));
-    }
 
     @GetMapping
     public ResponseEntity<List<DadosDetalhamentoUsuario>> listar(Pageable pageable) {

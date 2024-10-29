@@ -27,8 +27,8 @@ public class SecurityConfigurations {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
-                    req.requestMatchers(HttpMethod.POST,"/login", "/usuarios").permitAll();
-                    req.requestMatchers(HttpMethod.GET,"/usuarios/verificar/{uuid}").permitAll();
+                    req.requestMatchers(HttpMethod.POST,"/login", "/cadastrar").permitAll();
+                    req.requestMatchers(HttpMethod.GET,"/cadastrar/{uuid}").permitAll();
                     req.requestMatchers(HttpMethod.GET, "/usuarios", "/usuarios/{id}").hasRole("ADMIN");
                     req.requestMatchers(HttpMethod.PUT, "/usuarios").hasRole("ADMIN");
                     req.requestMatchers(HttpMethod.POST, "/produtos", "/produtos/estoque").hasRole("ADMIN");

@@ -8,7 +8,7 @@ import pedidos.api.repository.UsuarioRepository;
 import pedidos.api.service.security.TokenService;
 
 @Service
-public class EntityService {
+public class WeakEntityService {
 
     @Autowired
     private TokenService tokenService;

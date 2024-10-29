@@ -1,6 +1,5 @@
 package pedidos.api.service.entity;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -11,17 +10,14 @@ import pedidos.api.infra.exception.ValidacaoException;
 import pedidos.api.model.Item;
 import pedidos.api.model.Pedido;
 import pedidos.api.model.Produto;
-import pedidos.api.model.Usuario;
 import pedidos.api.repository.ItemRepository;
 import pedidos.api.repository.ProdutoRepository;
-import pedidos.api.repository.UsuarioRepository;
-import pedidos.api.service.security.TokenService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class PedidoService extends EntityService {
+public class PedidoService extends WeakEntityService {
 
     @Autowired
     private ProdutoRepository produtoRepository;

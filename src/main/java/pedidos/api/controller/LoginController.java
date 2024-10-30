@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pedidos.api.dto.usuario.DadosAutenticacaoUsuario;
+import pedidos.api.infra.exception.ValidacaoException;
 import pedidos.api.infra.security.DadosTokenJWT;
+import pedidos.api.model.SituacaoUsuario;
 import pedidos.api.model.Usuario;
 import pedidos.api.service.security.TokenService;
 
@@ -29,7 +31,11 @@ public class LoginController {
         var authenticationToken = new UsernamePasswordAuthenticationToken(dadosAutenticacaoUsuario.login(),
                 dadosAutenticacaoUsuario.senha());
         var authentication = manager.authenticate(authenticationToken);
-        var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());
+        Usuario usuario = (Usuario) authentication.getPrincipal();
+        if (usuario.getSituacaoUsuario() == SituacaoUsuario.PENDENTE) {
+            throw new ValidacaoException("Cadastro de usuário com pendência de ativação");
+        }
+        var tokenJWT = tokenService.gerarToken(usuario);
         return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
     }
 }

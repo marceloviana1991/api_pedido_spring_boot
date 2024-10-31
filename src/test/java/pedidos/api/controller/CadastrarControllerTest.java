@@ -22,17 +22,6 @@ class CadastrarControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    @MockBean
-    private CadastrarController cadastrarController;
-
-    @MockBean
-    private UsuarioRepository usuarioRepository;
-
-    @MockBean
-    private UsuarioService usuarioService;
-
-    record ResultadoEsperado(Long id, String login, String email){}
-
     @Test
     @DisplayName("Retorna 200 para pré-cadastro")
     void cadastrarUsuarioCenario1() throws Exception {
@@ -57,7 +46,7 @@ class CadastrarControllerTest {
     }
 
     @Test
-    @DisplayName("Retorna 400 para erro de validação na senha")
+    @DisplayName("Retorna 400 para erro de validação para senha ausente")
     void cadastrarUsuarioCenario2() throws Exception {
         //ARRANGE
         String json =
@@ -79,7 +68,7 @@ class CadastrarControllerTest {
     }
 
     @Test
-    @DisplayName("Retorna 400 para erro de validação no login")
+    @DisplayName("Retorna 400 para erro de validação para login em branco")
     void cadastrarUsuarioCenario3() throws Exception {
         //ARRANGE
         String json =
@@ -102,7 +91,7 @@ class CadastrarControllerTest {
     }
 
     @Test
-    @DisplayName("Retorna 400 para erro de validação no email")
+    @DisplayName("Retorna 400 para erro de validação para email fora do padrao")
     void cadastrarUsuarioCenario4() throws Exception {
         //ARRANGE
         String json =

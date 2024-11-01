@@ -9,13 +9,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pedidos.api.dto.produto.DadosCadastroProduto;
+import pedidos.api.dto.produto.estoque.DadosCadastroProdutoEstoque;
 import pedidos.api.model.Produto;
 import pedidos.api.model.Usuario;
 import pedidos.api.repository.ProdutoRepository;
 import pedidos.api.repository.UsuarioRepository;
 import pedidos.api.service.security.TokenService;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 class ProdutoServiceTest {
@@ -46,5 +47,15 @@ class ProdutoServiceTest {
     void cadastrarCenario1() {
         this.produto = produtoService.cadastrar(new DadosCadastroProduto("produto", 0.5), request);
         Assertions.assertEquals(produto.getQuantidadeEmEstoque(), 0);
+    }
+
+    @Test
+    @DisplayName("Adiciona em estoque")
+    void cadastrarCenario2() {
+        produto = produtoService.cadastrar(new DadosCadastroProduto("produto", 0.5), request);
+        DadosCadastroProdutoEstoque dadosCadastroProdutoEstoque = new DadosCadastroProdutoEstoque(1L, 5);
+        given(produtoRepository.getReferenceById(dadosCadastroProdutoEstoque.idProduto())).willReturn(produto);
+        produtoService.adicionarEmEstoque(dadosCadastroProdutoEstoque);
+        Assertions.assertEquals( 5, produto.getQuantidadeEmEstoque());
     }
 }

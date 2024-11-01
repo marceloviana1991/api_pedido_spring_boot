@@ -3,6 +3,7 @@ package pedidos.api.controller;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +22,12 @@ class CadastrarControllerTest {
 
     @Autowired
     private MockMvc mvc;
+
+    @MockBean
+    private UsuarioRepository usuarioRepository;
+
+    @MockBean
+    private UsuarioService usuarioService;
 
     @Test
     @DisplayName("Retorna 200 para pré-cadastro")

@@ -10,15 +10,11 @@ import pedidos.api.dto.DadosMensagemGenerica;
 import pedidos.api.dto.usuario.DadosCadastroUsuario;
 import pedidos.api.dto.usuario.DadosDetalhamentoUsuario;
 import pedidos.api.model.Usuario;
-import pedidos.api.repository.UsuarioRepository;
 import pedidos.api.service.entity.UsuarioService;
 
 @RestController
 @RequestMapping("/cadastrar")
 public class CadastrarController {
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
 
     @Autowired
     private UsuarioService usuarioService;
@@ -27,8 +23,7 @@ public class CadastrarController {
     @Transactional
     public ResponseEntity<DadosMensagemGenerica> cadastrar(
             @Valid @RequestBody DadosCadastroUsuario dadosCadastroUsuario, UriComponentsBuilder uriComponentsBuilder) {
-        Usuario usuario = new Usuario(dadosCadastroUsuario);
-        usuarioRepository.save(usuario);
+        Usuario usuario = usuarioService.cadastrar(dadosCadastroUsuario);
         return ResponseEntity.ok(new DadosMensagemGenerica(usuarioService.enviarEmailDeVerificacao(usuario,
                 uriComponentsBuilder)));
     }
@@ -36,7 +31,7 @@ public class CadastrarController {
     @GetMapping("/{uuid}")
     @Transactional
     public ResponseEntity<?> verificarCadastro(@PathVariable String uuid, UriComponentsBuilder uriComponentsBuilder) {
-        Usuario usuario = usuarioService.ativarCadastroUsuario(uuid, usuarioRepository);
+        Usuario usuario = usuarioService.ativarCadastroUsuario(uuid);
         if (usuario != null) {
             var uri = uriComponentsBuilder.path("/usuarios/{id}").buildAndExpand(usuario.getId()).toUri();
             return ResponseEntity.created(uri).body(new DadosDetalhamentoUsuario(usuario));

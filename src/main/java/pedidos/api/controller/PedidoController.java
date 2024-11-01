@@ -12,20 +12,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 import pedidos.api.dto.pedido.DadosCadastroPedido;
 import pedidos.api.dto.pedido.DadosDetalhamentoItem;
 import pedidos.api.dto.pedido.DadosDetalhamentoPedido;
-import pedidos.api.infra.exception.ValidacaoException;
 import pedidos.api.service.entity.PedidoService;
 import pedidos.api.model.*;
-import pedidos.api.repository.*;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/pedidos")
 public class PedidoController {
-
-    @Autowired
-    private PedidoRepository pedidoRepository;
 
     @Autowired
     private PedidoService pedidoService;
@@ -35,40 +30,40 @@ public class PedidoController {
     public ResponseEntity<DadosDetalhamentoPedido> cadastrar(
             @Valid @RequestBody DadosCadastroPedido dadosCadastroPedido , UriComponentsBuilder uriComponentsBuilder,
             HttpServletRequest request) {
-        Usuario usuario = pedidoService.capturarUsuarioLogado(request);
-        Pedido pedido = new Pedido(usuario);
-        pedidoRepository.save(pedido);
-        List<DadosDetalhamentoItem> dadosDetalhamentoItemList = pedidoService.adicionarItensAoPedido(
-                dadosCadastroPedido.itens(),pedido, pedidoService);
+        Pedido pedido = pedidoService.cadastrar(dadosCadastroPedido, request);
+        List<Item> itemList = pedidoService.adicionarItensAoPedido(dadosCadastroPedido.itens(), pedido);
+        List<DadosDetalhamentoItem> dadosDetalhamentoItemList = itemList.stream().map(DadosDetalhamentoItem::new)
+                .toList();
         var uri = uriComponentsBuilder.path("/pedidos/{id}").buildAndExpand(pedido.getId()).toUri();
         return ResponseEntity.created(uri).body(new DadosDetalhamentoPedido(pedido, dadosDetalhamentoItemList));
     }
 
     @GetMapping
     public ResponseEntity<List<DadosDetalhamentoPedido>> listar(Pageable pageable) {
-        Page<Pedido> pedidoList = pedidoRepository.findAll(pageable);
-        List<DadosDetalhamentoPedido> dadosDetalhamentoPedidoList = pedidoService.capturarItensDeListaDePedidos(
-                pedidoList);
+        Page<Pedido> pedidoList = pedidoService.listar(pageable);
+        List<DadosDetalhamentoPedido> dadosDetalhamentoPedidoList = new ArrayList<>();
+        for (Pedido pedido: pedidoList) {
+            List<Item> itemList = pedidoService.listarItens(pedido);
+            List<DadosDetalhamentoItem> dadosDetalhamentoItemList = itemList.stream().map(DadosDetalhamentoItem::new)
+                    .toList();
+            dadosDetalhamentoPedidoList.add(new DadosDetalhamentoPedido(pedido, dadosDetalhamentoItemList));
+        }
         return ResponseEntity.ok(dadosDetalhamentoPedidoList);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<DadosDetalhamentoPedido> detalhar(@PathVariable Long id, HttpServletRequest request) {
-        Usuario usuario = pedidoService.capturarUsuarioLogado(request);
-        Pedido pedido = pedidoRepository.getReferenceById(id);
-        if (!Objects.equals(usuario, pedido.getUsuario()) && usuario.getTipoUsuario() == TipoUsuario.USER) {
-            throw new ValidacaoException("Esse pedido não pertence ao usuário logado!");
-        }
-        List<DadosDetalhamentoItem> dadosDetalhamentoItemList = pedidoService.capturarItensDePedido(pedido);
+        Pedido pedido = pedidoService.detalhar(id, request);
+        List<Item> itemList = pedidoService.listarItens(pedido);
+        List<DadosDetalhamentoItem> dadosDetalhamentoItemList = itemList.stream().map(DadosDetalhamentoItem::new)
+                .toList();
         return ResponseEntity.ok(new DadosDetalhamentoPedido(pedido, dadosDetalhamentoItemList));
     }
 
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<?> excluir(@PathVariable Long id) {
-        Pedido pedido = pedidoRepository.getReferenceById(id);
-        pedidoService.excluirItensDePedido(pedido);
-        pedidoRepository.deleteById(id);
+        pedidoService.excluir(id);
         return ResponseEntity.noContent().build();
     }
 }

@@ -21,6 +21,7 @@ import static org.mockito.BDDMockito.given;
 @ExtendWith(MockitoExtension.class)
 class ProdutoServiceTest {
 
+    // Dentro dessa classe vai ter classes que serão mock
     @InjectMocks
     private ProdutoService produtoService;
 
@@ -46,6 +47,7 @@ class ProdutoServiceTest {
     @DisplayName("Instancia e salva um produto")
     void cadastrarCenario1() {
         this.produto = produtoService.cadastrar(new DadosCadastroProduto("produto", 0.5), request);
+        Assertions.assertNotNull(produto.getDataDeCadastro());
         Assertions.assertEquals(produto.getQuantidadeEmEstoque(), 0);
     }
 

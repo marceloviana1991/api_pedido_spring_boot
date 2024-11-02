@@ -1,30 +1,20 @@
 package pedidos.api.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import pedidos.api.dto.produto.DadosCadastroProduto;
-import pedidos.api.model.Produto;
-import pedidos.api.model.Usuario;
 import pedidos.api.repository.ProdutoRepository;
-import pedidos.api.repository.UsuarioRepository;
-import pedidos.api.service.entity.ProdutoService;
 import pedidos.api.service.security.TokenService;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -33,26 +23,8 @@ class ProdutoControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    @InjectMocks
-    private ProdutoController produtoController;
-
-    @InjectMocks
-    private ProdutoService produtoService;
-
-    @MockBean
-    private DadosCadastroProduto dadosCadastroProduto;
-
-    @MockBean
-    private Produto produto;
-
-    @MockBean
-    private Usuario usuario;
-
     @MockBean
     private TokenService tokenService;
-
-    @MockBean
-    private UsuarioRepository usuarioRepository;
 
     @MockBean
     private ProdutoRepository produtoRepository;
@@ -142,4 +114,5 @@ class ProdutoControllerTest {
         var response = mvc.perform(post("/produtos/estoque")).andReturn().getResponse();
         Assertions.assertEquals(403, response.getStatus());
     }
+
 }

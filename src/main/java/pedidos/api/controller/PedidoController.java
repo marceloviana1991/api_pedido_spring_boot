@@ -42,12 +42,12 @@ public class PedidoController {
     public ResponseEntity<List<DadosDetalhamentoPedido>> listar(Pageable pageable) {
         Page<Pedido> pedidoList = pedidoService.listar(pageable);
         List<DadosDetalhamentoPedido> dadosDetalhamentoPedidoList = new ArrayList<>();
-        for (Pedido pedido: pedidoList) {
+        pedidoList.forEach(pedido -> {
             List<Item> itemList = pedidoService.listarItens(pedido);
             List<DadosDetalhamentoItem> dadosDetalhamentoItemList = itemList.stream().map(DadosDetalhamentoItem::new)
                     .toList();
             dadosDetalhamentoPedidoList.add(new DadosDetalhamentoPedido(pedido, dadosDetalhamentoItemList));
-        }
+        });
         return ResponseEntity.ok(dadosDetalhamentoPedidoList);
     }
 

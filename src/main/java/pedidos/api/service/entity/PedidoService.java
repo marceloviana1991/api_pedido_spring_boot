@@ -41,15 +41,15 @@ public class PedidoService extends WeakEntityService {
         return produto;
     }
 
-    public List<Item> adicionarItensAoPedido(List<DadosCadastroItem> itens, Pedido pedido) {
+    public List<Item> adicionarItensAoPedido(List<DadosCadastroItem> dadosCadastroItemList, Pedido pedido) {
         List<Item> ItemList = new ArrayList<>();
-        for (DadosCadastroItem dadosCadastroItem: itens) {
+        dadosCadastroItemList.forEach(dadosCadastroItem -> {
             Produto produto = retirarProdutoEmEstoque(dadosCadastroItem.idProduto(),
                     dadosCadastroItem.quantidade());
             Item item = new Item(dadosCadastroItem,pedido,produto);
             itemRepository.save(item);
             ItemList.add(item);
-        }
+        });
         return ItemList;
     }
 

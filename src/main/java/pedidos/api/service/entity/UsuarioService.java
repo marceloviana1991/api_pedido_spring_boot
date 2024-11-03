@@ -7,10 +7,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
+import pedidos.api.dto.DadosMensagemGenerica;
 import pedidos.api.dto.usuario.DadosAtualizacaoUsuario;
 import pedidos.api.dto.usuario.DadosAutenticacaoUsuario;
 import pedidos.api.dto.usuario.DadosCadastroUsuario;
+import pedidos.api.dto.usuario.DadosDetalhamentoUsuario;
 import pedidos.api.infra.exception.ValidacaoException;
+import pedidos.api.infra.security.DadosTokenJWT;
 import pedidos.api.model.SituacaoUsuario;
 import pedidos.api.model.Usuario;
 import pedidos.api.model.UsuarioVerificador;
@@ -52,27 +55,28 @@ public class UsuarioService {
                         + uri);
     }
 
-    public Usuario ativarCadastroUsuario(String uuid) {
+    public Object ativarCadastroUsuario(String uuid) {
         UsuarioVerificador verificador = usuarioVerificadorRepository.findByUuid(UUID.fromString(uuid));
         if (verificador.getDataExpiracao().compareTo(Instant.now()) >= 0) {
             verificador.getUsuario().ativarCadastro();
             Usuario usuario = verificador.getUsuario();
             usuarioVerificadorRepository.delete(verificador);
-            return usuario;
+            return new DadosDetalhamentoUsuario(usuario);
         }
         Usuario usuario = verificador.getUsuario();
         usuarioVerificadorRepository.delete(verificador);
         usuarioRepository.delete(usuario);
-        return null;
+        return new DadosMensagemGenerica("Tempo de ativação expirado.");
     }
 
-    public Usuario cadastrar(DadosCadastroUsuario dadosCadastroUsuario) {
+    public DadosMensagemGenerica cadastrar(DadosCadastroUsuario dadosCadastroUsuario,
+                                           UriComponentsBuilder uriComponentsBuilder) {
         Usuario usuario = new Usuario(dadosCadastroUsuario);
         usuarioRepository.save(usuario);
-        return usuario;
+        return new DadosMensagemGenerica(enviarEmailDeVerificacao(usuario, uriComponentsBuilder));
     }
 
-    public String efetuarLogin(DadosAutenticacaoUsuario dadosAutenticacaoUsuario) {
+    public DadosTokenJWT efetuarLogin(DadosAutenticacaoUsuario dadosAutenticacaoUsuario) {
         var authenticationToken = new UsernamePasswordAuthenticationToken(dadosAutenticacaoUsuario.login(),
                 dadosAutenticacaoUsuario.senha());
         var authentication = manager.authenticate(authenticationToken);
@@ -80,20 +84,23 @@ public class UsuarioService {
         if (usuario.getSituacaoUsuario() == SituacaoUsuario.PENDENTE) {
             throw new ValidacaoException("Cadastro de usuário com pendência de ativação");
         }
-        return tokenService.gerarToken(usuario);
+        var tokenJWT = tokenService.gerarToken(usuario);
+        return new DadosTokenJWT(tokenJWT);
     }
 
-    public Usuario atualizar(DadosAtualizacaoUsuario dadosAtualizacaoUsuario) {
+    public DadosDetalhamentoUsuario atualizar(DadosAtualizacaoUsuario dadosAtualizacaoUsuario) {
         Usuario usuario = usuarioRepository.getReferenceById(dadosAtualizacaoUsuario.id());
         usuario.atualizarDados(dadosAtualizacaoUsuario);
-        return usuario;
+        return new DadosDetalhamentoUsuario(usuario);
     }
 
-    public Page<Usuario> listar(Pageable pageable) {
-        return usuarioRepository.findAll(pageable);
+    public List<DadosDetalhamentoUsuario> listar(Pageable pageable) {
+        Page<Usuario> usuarioList = usuarioRepository.findAll(pageable);
+        return usuarioList.stream().map(DadosDetalhamentoUsuario::new).toList();
     }
 
-    public Usuario detalhar(Long id) {
-        return usuarioRepository.getReferenceById(id);
+    public DadosDetalhamentoUsuario detalhar(Long id) {
+        Usuario usuario = usuarioRepository.getReferenceById(id);
+        return new DadosDetalhamentoUsuario(usuario);
     }
 }

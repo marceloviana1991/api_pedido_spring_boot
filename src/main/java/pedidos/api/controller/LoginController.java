@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pedidos.api.dto.usuario.DadosAutenticacaoUsuario;
-import pedidos.api.infra.security.DadosTokenJWT;
 import pedidos.api.service.entity.UsuarioService;
 
 @RestController
@@ -21,6 +20,6 @@ public class LoginController {
     @PostMapping
     public ResponseEntity<?> efetuarLogin(@RequestBody @Valid DadosAutenticacaoUsuario dadosAutenticacaoUsuario) {
         var tokenJWT = usuarioService.efetuarLogin(dadosAutenticacaoUsuario);
-        return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
+        return ResponseEntity.ok(tokenJWT);
     }
 }

@@ -9,7 +9,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import pedidos.api.dto.DadosMensagemGenerica;
 import pedidos.api.dto.usuario.DadosCadastroUsuario;
 import pedidos.api.dto.usuario.DadosDetalhamentoUsuario;
-import pedidos.api.model.Usuario;
 import pedidos.api.service.entity.UsuarioService;
 
 @RestController
@@ -23,19 +22,19 @@ public class CadastrarController {
     @Transactional
     public ResponseEntity<DadosMensagemGenerica> cadastrar(
             @Valid @RequestBody DadosCadastroUsuario dadosCadastroUsuario, UriComponentsBuilder uriComponentsBuilder) {
-        Usuario usuario = usuarioService.cadastrar(dadosCadastroUsuario);
-        return ResponseEntity.ok(new DadosMensagemGenerica(usuarioService.enviarEmailDeVerificacao(usuario,
-                uriComponentsBuilder)));
+        DadosMensagemGenerica mensagemGenerica = usuarioService.cadastrar(dadosCadastroUsuario, uriComponentsBuilder);
+        return ResponseEntity.ok(mensagemGenerica);
     }
 
     @GetMapping("/{uuid}")
     @Transactional
     public ResponseEntity<?> verificarCadastro(@PathVariable String uuid, UriComponentsBuilder uriComponentsBuilder) {
-        Usuario usuario = usuarioService.ativarCadastroUsuario(uuid);
-        if (usuario != null) {
-            var uri = uriComponentsBuilder.path("/usuarios/{id}").buildAndExpand(usuario.getId()).toUri();
-            return ResponseEntity.created(uri).body(new DadosDetalhamentoUsuario(usuario));
+        Object verificacao = usuarioService.ativarCadastroUsuario(uuid);
+        if (verificacao.getClass().isInstance(DadosDetalhamentoUsuario.class)) {
+            DadosDetalhamentoUsuario dadosDetalhamentoUsuario = (DadosDetalhamentoUsuario) verificacao;
+            var uri = uriComponentsBuilder.path("/usuarios/{id}").buildAndExpand(dadosDetalhamentoUsuario.id()).toUri();
+            return ResponseEntity.created(uri).body(dadosDetalhamentoUsuario.id());
         }
-        return ResponseEntity.badRequest().body(new DadosMensagemGenerica("Tempo de ativação expirado."));
+        return ResponseEntity.badRequest().body(verificacao);
     }
 }

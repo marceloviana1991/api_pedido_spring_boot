@@ -30,34 +30,21 @@ public class PedidoController {
     public ResponseEntity<DadosDetalhamentoPedido> cadastrar(
             @Valid @RequestBody DadosCadastroPedido dadosCadastroPedido , UriComponentsBuilder uriComponentsBuilder,
             HttpServletRequest request) {
-        Pedido pedido = pedidoService.cadastrar(dadosCadastroPedido, request);
-        List<Item> itemList = pedidoService.adicionarItensAoPedido(dadosCadastroPedido.itens(), pedido);
-        List<DadosDetalhamentoItem> dadosDetalhamentoItemList = itemList.stream().map(DadosDetalhamentoItem::new)
-                .toList();
-        var uri = uriComponentsBuilder.path("/pedidos/{id}").buildAndExpand(pedido.getId()).toUri();
-        return ResponseEntity.created(uri).body(new DadosDetalhamentoPedido(pedido, dadosDetalhamentoItemList));
+        DadosDetalhamentoPedido dadosDetalhamentoPedido = pedidoService.cadastrar(dadosCadastroPedido, request);
+        var uri = uriComponentsBuilder.path("/pedidos/{id}").buildAndExpand(dadosDetalhamentoPedido.idPedido()).toUri();
+        return ResponseEntity.created(uri).body(dadosDetalhamentoPedido);
     }
 
     @GetMapping
     public ResponseEntity<List<DadosDetalhamentoPedido>> listar(Pageable pageable) {
-        Page<Pedido> pedidoList = pedidoService.listar(pageable);
-        List<DadosDetalhamentoPedido> dadosDetalhamentoPedidoList = new ArrayList<>();
-        pedidoList.forEach(pedido -> {
-            List<Item> itemList = pedidoService.listarItens(pedido);
-            List<DadosDetalhamentoItem> dadosDetalhamentoItemList = itemList.stream().map(DadosDetalhamentoItem::new)
-                    .toList();
-            dadosDetalhamentoPedidoList.add(new DadosDetalhamentoPedido(pedido, dadosDetalhamentoItemList));
-        });
+        List<DadosDetalhamentoPedido> dadosDetalhamentoPedidoList = pedidoService.listar(pageable);
         return ResponseEntity.ok(dadosDetalhamentoPedidoList);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<DadosDetalhamentoPedido> detalhar(@PathVariable Long id, HttpServletRequest request) {
-        Pedido pedido = pedidoService.detalhar(id, request);
-        List<Item> itemList = pedidoService.listarItens(pedido);
-        List<DadosDetalhamentoItem> dadosDetalhamentoItemList = itemList.stream().map(DadosDetalhamentoItem::new)
-                .toList();
-        return ResponseEntity.ok(new DadosDetalhamentoPedido(pedido, dadosDetalhamentoItemList));
+        DadosDetalhamentoPedido dadosDetalhamentoPedido = pedidoService.detalhar(id, request);
+        return ResponseEntity.ok(dadosDetalhamentoPedido);
     }
 
     @DeleteMapping("/{id}")

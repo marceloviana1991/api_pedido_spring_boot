@@ -57,28 +57,42 @@ public class PedidoService extends WeakEntityService {
         itemRepository.deleteAllByPedido(pedido);
     }
 
-    public Pedido cadastrar(DadosCadastroPedido dadosCadastroPedido, HttpServletRequest request) {
+    public DadosDetalhamentoPedido cadastrar(DadosCadastroPedido dadosCadastroPedido, HttpServletRequest request) {
         Usuario usuario = capturarUsuarioLogado(request);
         Pedido pedido = new Pedido(usuario);
         pedidoRepository.save(pedido);
-        return pedido;
+        List<Item> itemList = adicionarItensAoPedido(dadosCadastroPedido.itens(), pedido);
+        List<DadosDetalhamentoItem> dadosDetalhamentoItemList = itemList.stream().map(DadosDetalhamentoItem::new)
+                .toList();
+        return new DadosDetalhamentoPedido(pedido, dadosDetalhamentoItemList);
     }
 
-    public Page<Pedido> listar(Pageable pageable) {
-        return pedidoRepository.findAll(pageable);
+    public List<DadosDetalhamentoPedido> listar(Pageable pageable) {
+        Page<Pedido> pedidoList = pedidoRepository.findAll(pageable);
+        List<DadosDetalhamentoPedido> dadosDetalhamentoPedidoList = new ArrayList<>();
+        pedidoList.forEach(pedido -> {
+            List<Item> itemList = listarItens(pedido);
+            List<DadosDetalhamentoItem> dadosDetalhamentoItemList = itemList.stream().map(DadosDetalhamentoItem::new)
+                    .toList();
+            dadosDetalhamentoPedidoList.add(new DadosDetalhamentoPedido(pedido, dadosDetalhamentoItemList));
+        });
+        return dadosDetalhamentoPedidoList;
     }
 
     public List<Item> listarItens(Pedido pedido) {
         return itemRepository.findAllByPedido(pedido);
     }
 
-    public Pedido detalhar(Long id, HttpServletRequest request) {
+    public DadosDetalhamentoPedido detalhar(Long id, HttpServletRequest request) {
         Usuario usuario = capturarUsuarioLogado(request);
         Pedido pedido = pedidoRepository.getReferenceById(id);
         if (!Objects.equals(usuario, pedido.getUsuario()) && usuario.getTipoUsuario() == TipoUsuario.USER) {
             throw new ValidacaoException("Esse pedido não pertence ao usuário logado!");
         }
-        return pedido;
+        List<Item> itemList = listarItens(pedido);
+        List<DadosDetalhamentoItem> dadosDetalhamentoItemList = itemList.stream().map(DadosDetalhamentoItem::new)
+                .toList();
+        return new DadosDetalhamentoPedido(pedido, dadosDetalhamentoItemList);
     }
 
     public void excluir(Long id) {

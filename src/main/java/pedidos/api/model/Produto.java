@@ -27,6 +27,7 @@ public class Produto {
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
+    private String foto;
 
     public Produto(DadosCadastroProduto dadosCadastroProduto, Usuario usuario) {
         this.nome = dadosCadastroProduto.nome();
@@ -53,5 +54,9 @@ public class Produto {
 
     public void retirarEmEstoque(Integer quantidadeRetirada) {
         this.quantidadeEmEstoque = this.quantidadeEmEstoque - quantidadeRetirada;
+    }
+
+    public void adicionarFoto(String nomeDoArquivo) {
+        this.foto = nomeDoArquivo;
     }
 }

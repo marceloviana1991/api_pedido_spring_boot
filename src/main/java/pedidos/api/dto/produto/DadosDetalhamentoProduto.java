@@ -9,7 +9,8 @@ public record DadosDetalhamentoProduto(
         String nome,
         Double valor,
         Integer quantidadeEmEstoque,
-        LocalDateTime dataDeCadastro
+        LocalDateTime dataDeCadastro,
+        String foto
 ) {
     public DadosDetalhamentoProduto(Produto produto) {
         this(
@@ -17,7 +18,8 @@ public record DadosDetalhamentoProduto(
                 produto.getNome(),
                 produto.getValor(),
                 produto.getQuantidadeEmEstoque(),
-                produto.getDataDeCadastro()
+                produto.getDataDeCadastro(),
+                produto.getFoto()
         );
     }
 }

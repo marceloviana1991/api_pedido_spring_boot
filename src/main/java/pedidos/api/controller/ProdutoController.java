@@ -7,11 +7,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 import pedidos.api.dto.produto.DadosAtualizacaoProduto;
 import pedidos.api.dto.produto.DadosCadastroProduto;
 import pedidos.api.dto.produto.DadosDetalhamentoProduto;
 import pedidos.api.dto.produto.estoque.DadosCadastroProdutoEstoque;
+import pedidos.api.infra.storage.Disco;
 import pedidos.api.service.entity.ProdutoService;
 
 import java.util.List;
@@ -38,6 +40,13 @@ public class ProdutoController {
             @Valid @RequestBody DadosCadastroProdutoEstoque dadosCadastroProdutoEstoque) {
         DadosDetalhamentoProduto dadosDetalhamentoProduto = produtoService.adicionarEmEstoque(
                 dadosCadastroProdutoEstoque);
+        return ResponseEntity.ok(dadosDetalhamentoProduto);
+    }
+
+    @PostMapping("/foto/{id}")
+    @Transactional
+    public ResponseEntity<DadosDetalhamentoProduto> upload(@RequestParam MultipartFile foto, @PathVariable Long id) {
+        DadosDetalhamentoProduto dadosDetalhamentoProduto = produtoService.adicionarFoto(foto, id);
         return ResponseEntity.ok(dadosDetalhamentoProduto);
     }
 

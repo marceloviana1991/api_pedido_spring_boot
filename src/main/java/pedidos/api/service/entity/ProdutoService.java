@@ -61,6 +61,9 @@ public class ProdutoService extends WeakEntityService {
     public DadosDetalhamentoProduto adicionarFoto(MultipartFile foto, Long id) {
         String nomeDoArquivo = disco.salvarFoto(foto);
         Produto produto = produtoRepository.getReferenceById(id);
+        if (produto.getFoto() != null) {
+            disco.excluirFoto(produto.getFoto());
+        }
         produto.adicionarFoto(nomeDoArquivo);
         return new DadosDetalhamentoProduto(produto);
     }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -44,5 +45,11 @@ public class Disco {
         String extensao = "." + nomeSplit[1];
 
         return UUID.randomUUID() + extensao;
+    }
+
+    public void excluirFoto(String nomeDaFoto) {
+        Path diretorioPath = Paths.get(raiz, diretorioFotos);
+        File file = new File(diretorioPath + "/" + nomeDaFoto);
+        file.delete();
     }
 }

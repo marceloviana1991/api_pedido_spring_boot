@@ -17,6 +17,7 @@ import pedidos.api.model.Produto;
 import pedidos.api.model.Usuario;
 import pedidos.api.repository.ProdutoRepository;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -58,7 +59,7 @@ public class ProdutoService extends WeakEntityService {
         return new DadosDetalhamentoProduto(produto);
     }
 
-    public DadosDetalhamentoProduto adicionarFoto(MultipartFile foto, Long id) {
+    public DadosDetalhamentoProduto adicionarFoto(MultipartFile foto, Long id) throws IOException {
         String nomeDoArquivo = disco.salvarFoto(foto);
         Produto produto = produtoRepository.getReferenceById(id);
         if (produto.getFoto() != null) {

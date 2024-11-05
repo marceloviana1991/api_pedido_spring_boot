@@ -10,12 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
+import pedidos.api.dto.DadosMensagemGenerica;
 import pedidos.api.dto.produto.DadosAtualizacaoProduto;
 import pedidos.api.dto.produto.DadosCadastroProduto;
 import pedidos.api.dto.produto.DadosDetalhamentoProduto;
 import pedidos.api.dto.produto.estoque.DadosCadastroProdutoEstoque;
 import pedidos.api.service.entity.ProdutoService;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -46,9 +48,13 @@ public class ProdutoController {
 
     @PostMapping("/foto/{id}")
     @Transactional
-    public ResponseEntity<DadosDetalhamentoProduto> uploadDeFotoDeProduto(@RequestParam MultipartFile foto, @PathVariable Long id) {
-        DadosDetalhamentoProduto dadosDetalhamentoProduto = produtoService.adicionarFoto(foto, id);
-        return ResponseEntity.ok(dadosDetalhamentoProduto);
+    public ResponseEntity<?> uploadDeFotoDeProduto(@RequestParam MultipartFile foto, @PathVariable Long id) {
+        try {
+            DadosDetalhamentoProduto dadosDetalhamentoProduto = produtoService.adicionarFoto(foto, id);
+            return ResponseEntity.ok(dadosDetalhamentoProduto);
+        } catch (IOException ioException) {
+            return ResponseEntity.badRequest().body(new DadosMensagemGenerica(ioException.getMessage()));
+        }
     }
 
     @GetMapping

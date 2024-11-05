@@ -20,22 +20,25 @@ public class Disco {
     @Value("${contato.disco.diretorio-fotos}")
     private String diretorioFotos;
 
-    public String salvarFoto(MultipartFile foto) {
+    public String salvarFoto(MultipartFile foto) throws IOException {
         String nomeDoArquivo = this.salvar(this.diretorioFotos, foto);
         return nomeDoArquivo;
     }
 
-    public String salvar(String diretorio, MultipartFile arquivo) {
+    public String salvar(String diretorio, MultipartFile arquivo) throws IOException {
         Path diretorioPath = Paths.get(this.raiz, diretorio);
         String novoNome = this.gerarNovoNome(arquivo.getOriginalFilename());
         Path arquivoPath = diretorioPath.resolve(novoNome);
 
-        try {
-            Files.createDirectories(diretorioPath);
-            arquivo.transferTo(arquivoPath.toFile());
-        } catch (IOException e) {
-            throw new RuntimeException("Problemas na tentativa de salvar arquivo.", e);
-        }
+
+        Files.createDirectories(diretorioPath);
+        arquivo.transferTo(arquivoPath.toFile());
+//        try {
+//            Files.createDirectories(diretorioPath);
+//            arquivo.transferTo(arquivoPath.toFile());
+//        } catch (IOException e) {
+//            throw new RuntimeException("Problemas na tentativa de salvar arquivo.", e);
+//        }
         return novoNome;
     }
 

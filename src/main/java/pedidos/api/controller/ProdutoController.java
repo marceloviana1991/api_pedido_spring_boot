@@ -14,7 +14,6 @@ import pedidos.api.dto.produto.DadosAtualizacaoProduto;
 import pedidos.api.dto.produto.DadosCadastroProduto;
 import pedidos.api.dto.produto.DadosDetalhamentoProduto;
 import pedidos.api.dto.produto.estoque.DadosCadastroProdutoEstoque;
-import pedidos.api.infra.storage.Disco;
 import pedidos.api.service.entity.ProdutoService;
 
 import java.util.List;

@@ -9,6 +9,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import pedidos.api.dto.DadosMensagemGenerica;
 import pedidos.api.dto.usuario.DadosCadastroUsuario;
 import pedidos.api.dto.usuario.DadosDetalhamentoUsuario;
+import pedidos.api.infra.exception.ValidacaoException;
 import pedidos.api.service.entity.UsuarioService;
 
 @RestController
@@ -28,13 +29,15 @@ public class CadastrarController {
 
     @GetMapping("/{uuid}")
     @Transactional
-    public ResponseEntity<?> verificarCadastroDeUsuario(@PathVariable String uuid, UriComponentsBuilder uriComponentsBuilder) {
-        Object verificacao = usuarioService.ativarCadastroUsuario(uuid);
-        if (verificacao.getClass().isInstance(DadosDetalhamentoUsuario.class)) {
-            DadosDetalhamentoUsuario dadosDetalhamentoUsuario = (DadosDetalhamentoUsuario) verificacao;
+    public ResponseEntity<?> verificarCadastroDeUsuario(@PathVariable String uuid,
+                                                        UriComponentsBuilder uriComponentsBuilder) {
+        try {
+            DadosDetalhamentoUsuario dadosDetalhamentoUsuario = usuarioService.ativarCadastroUsuario(uuid);
             var uri = uriComponentsBuilder.path("/usuarios/{id}").buildAndExpand(dadosDetalhamentoUsuario.id()).toUri();
-            return ResponseEntity.created(uri).body(dadosDetalhamentoUsuario.id());
+            return ResponseEntity.created(uri).body(dadosDetalhamentoUsuario);
+        } catch (ValidacaoException validacaoException) {
+            usuarioService.excluirCadastroPendenteExpirado(uuid);
+            return ResponseEntity.badRequest().body(new DadosMensagemGenerica(validacaoException.getMessage()));
         }
-        return ResponseEntity.badRequest().body(verificacao);
     }
 }

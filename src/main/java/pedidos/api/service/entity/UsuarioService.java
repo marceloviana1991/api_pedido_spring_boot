@@ -55,18 +55,22 @@ public class UsuarioService {
                         + uri);
     }
 
-    public Object ativarCadastroUsuario(String uuid) {
+    public DadosDetalhamentoUsuario ativarCadastroUsuario(String uuid) {
         UsuarioVerificador verificador = usuarioVerificadorRepository.findByUuid(UUID.fromString(uuid));
-        if (verificador.getDataExpiracao().compareTo(Instant.now()) >= 0) {
-            verificador.getUsuario().ativarCadastro();
-            Usuario usuario = verificador.getUsuario();
-            usuarioVerificadorRepository.delete(verificador);
-            return new DadosDetalhamentoUsuario(usuario);
+        if (verificador.getDataExpiracao().compareTo(Instant.now()) < 0) {
+            throw new ValidacaoException("Tempo de validação expirado.");
         }
+        verificador.getUsuario().ativarCadastro();
+        Usuario usuario = verificador.getUsuario();
+        usuarioVerificadorRepository.delete(verificador);
+        return new DadosDetalhamentoUsuario(usuario);
+    }
+
+    public void excluirCadastroPendenteExpirado(String uuid) {
+        UsuarioVerificador verificador = usuarioVerificadorRepository.findByUuid(UUID.fromString(uuid));
         Usuario usuario = verificador.getUsuario();
         usuarioVerificadorRepository.delete(verificador);
         usuarioRepository.delete(usuario);
-        return new DadosMensagemGenerica("Tempo de ativação expirado.");
     }
 
     public DadosMensagemGenerica cadastrar(DadosCadastroUsuario dadosCadastroUsuario,

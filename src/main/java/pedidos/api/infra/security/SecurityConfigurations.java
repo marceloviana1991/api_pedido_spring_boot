@@ -29,6 +29,8 @@ public class SecurityConfigurations {
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(HttpMethod.POST,"/login", "/cadastrar").permitAll();
                     req.requestMatchers(HttpMethod.GET,"/cadastrar/{uuid}").permitAll();
+                    req.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**",
+                            "/v3/api-docs.yaml").permitAll();
                     req.requestMatchers(HttpMethod.GET, "/usuarios", "/usuarios/{id}").hasRole("ADMIN");
                     req.requestMatchers(HttpMethod.PUT, "/usuarios").hasRole("ADMIN");
                     req.requestMatchers(HttpMethod.POST, "/produtos", "/produtos/estoque",

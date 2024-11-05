@@ -1,5 +1,6 @@
 package pedidos.api.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/produtos")
+@SecurityRequirement(name = "bearer-key")
 public class ProdutoController {
 
     @Autowired

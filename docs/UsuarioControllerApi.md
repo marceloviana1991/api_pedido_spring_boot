@@ -4,13 +4,13 @@ All URIs are relative to *http://localhost:8080*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**atualizar**](UsuarioControllerApi.md#atualizar) | **PUT** /usuarios | 
-[**detalhar**](UsuarioControllerApi.md#detalhar) | **GET** /usuarios/{id} | 
-[**listar**](UsuarioControllerApi.md#listar) | **GET** /usuarios | 
+[**atualizarUsuario**](UsuarioControllerApi.md#atualizarUsuario) | **PUT** /usuarios | 
+[**detalharUsuario**](UsuarioControllerApi.md#detalharUsuario) | **GET** /usuarios/{id} | 
+[**listarUsuarios**](UsuarioControllerApi.md#listarUsuarios) | **GET** /usuarios | 
 
-<a name="atualizar"></a>
-# **atualizar**
-> DadosDetalhamentoUsuario atualizar(body)
+<a name="atualizarUsuario"></a>
+# **atualizarUsuario**
+> DadosDetalhamentoUsuario atualizarUsuario(body)
 
 
 
@@ -29,10 +29,10 @@ ApiClient defaultClient = Configuration.getDefaultApiClient();
 UsuarioControllerApi apiInstance = new UsuarioControllerApi();
 DadosAtualizacaoUsuario body = new DadosAtualizacaoUsuario(); // DadosAtualizacaoUsuario | 
 try {
-    DadosDetalhamentoUsuario result = apiInstance.atualizar(body);
+    DadosDetalhamentoUsuario result = apiInstance.atualizarUsuario(body);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling UsuarioControllerApi#atualizar");
+    System.err.println("Exception when calling UsuarioControllerApi#atualizarUsuario");
     e.printStackTrace();
 }
 ```
@@ -56,9 +56,9 @@ Name | Type | Description  | Notes
  - **Content-Type**: application/json
  - **Accept**: */*
 
-<a name="detalhar"></a>
-# **detalhar**
-> DadosDetalhamentoUsuario detalhar(id)
+<a name="detalharUsuario"></a>
+# **detalharUsuario**
+> DadosDetalhamentoUsuario detalharUsuario(id)
 
 
 
@@ -77,10 +77,10 @@ ApiClient defaultClient = Configuration.getDefaultApiClient();
 UsuarioControllerApi apiInstance = new UsuarioControllerApi();
 Long id = 789L; // Long | 
 try {
-    DadosDetalhamentoUsuario result = apiInstance.detalhar(id);
+    DadosDetalhamentoUsuario result = apiInstance.detalharUsuario(id);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling UsuarioControllerApi#detalhar");
+    System.err.println("Exception when calling UsuarioControllerApi#detalharUsuario");
     e.printStackTrace();
 }
 ```
@@ -104,9 +104,9 @@ Name | Type | Description  | Notes
  - **Content-Type**: Not defined
  - **Accept**: */*
 
-<a name="listar"></a>
-# **listar**
-> List&lt;DadosDetalhamentoUsuario&gt; listar(pageable)
+<a name="listarUsuarios"></a>
+# **listarUsuarios**
+> List&lt;DadosDetalhamentoUsuario&gt; listarUsuarios(pageable)
 
 
 
@@ -125,10 +125,10 @@ ApiClient defaultClient = Configuration.getDefaultApiClient();
 UsuarioControllerApi apiInstance = new UsuarioControllerApi();
 Pageable pageable = new Pageable(); // Pageable | 
 try {
-    List<DadosDetalhamentoUsuario> result = apiInstance.listar(pageable);
+    List<DadosDetalhamentoUsuario> result = apiInstance.listarUsuarios(pageable);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling UsuarioControllerApi#listar");
+    System.err.println("Exception when calling UsuarioControllerApi#listarUsuarios");
     e.printStackTrace();
 }
 ```

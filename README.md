@@ -22,22 +22,22 @@ All URIs are relative to *http://localhost:8080*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*CadastrarControllerApi* | [**cadastrar2**](docs/CadastrarControllerApi.md#cadastrar2) | **POST** /cadastrar | 
-*CadastrarControllerApi* | [**verificarCadastro**](docs/CadastrarControllerApi.md#verificarCadastro) | **GET** /cadastrar/{uuid} | 
+*CadastrarControllerApi* | [**cadastrarUsuario**](docs/CadastrarControllerApi.md#cadastrarUsuario) | **POST** /cadastrar | 
+*CadastrarControllerApi* | [**verificarCadastroDeUsuario**](docs/CadastrarControllerApi.md#verificarCadastroDeUsuario) | **GET** /cadastrar/{uuid} | 
 *LoginControllerApi* | [**efetuarLogin**](docs/LoginControllerApi.md#efetuarLogin) | **POST** /login | 
-*PedidoControllerApi* | [**cadastrar1**](docs/PedidoControllerApi.md#cadastrar1) | **POST** /pedidos | 
-*PedidoControllerApi* | [**detalhar2**](docs/PedidoControllerApi.md#detalhar2) | **GET** /pedidos/{id} | 
-*PedidoControllerApi* | [**excluir**](docs/PedidoControllerApi.md#excluir) | **DELETE** /pedidos/{id} | 
-*PedidoControllerApi* | [**listar2**](docs/PedidoControllerApi.md#listar2) | **GET** /pedidos | 
-*ProdutoControllerApi* | [**adicionarEmEstoque**](docs/ProdutoControllerApi.md#adicionarEmEstoque) | **POST** /produtos/estoque | 
-*ProdutoControllerApi* | [**atualizar1**](docs/ProdutoControllerApi.md#atualizar1) | **PUT** /produtos | 
-*ProdutoControllerApi* | [**cadastrar**](docs/ProdutoControllerApi.md#cadastrar) | **POST** /produtos | 
-*ProdutoControllerApi* | [**detalhar1**](docs/ProdutoControllerApi.md#detalhar1) | **GET** /produtos/{id} | 
-*ProdutoControllerApi* | [**listar1**](docs/ProdutoControllerApi.md#listar1) | **GET** /produtos | 
-*ProdutoControllerApi* | [**upload**](docs/ProdutoControllerApi.md#upload) | **POST** /produtos/foto/{id} | 
-*UsuarioControllerApi* | [**atualizar**](docs/UsuarioControllerApi.md#atualizar) | **PUT** /usuarios | 
-*UsuarioControllerApi* | [**detalhar**](docs/UsuarioControllerApi.md#detalhar) | **GET** /usuarios/{id} | 
-*UsuarioControllerApi* | [**listar**](docs/UsuarioControllerApi.md#listar) | **GET** /usuarios | 
+*PedidoControllerApi* | [**cadastrarPedido**](docs/PedidoControllerApi.md#cadastrarPedido) | **POST** /pedidos | 
+*PedidoControllerApi* | [**detalharPedido**](docs/PedidoControllerApi.md#detalharPedido) | **GET** /pedidos/{id} | 
+*PedidoControllerApi* | [**excluirPedido**](docs/PedidoControllerApi.md#excluirPedido) | **DELETE** /pedidos/{id} | 
+*PedidoControllerApi* | [**listarPedidos**](docs/PedidoControllerApi.md#listarPedidos) | **GET** /pedidos | 
+*ProdutoControllerApi* | [**adicionarProdutoEmEstoque**](docs/ProdutoControllerApi.md#adicionarProdutoEmEstoque) | **POST** /produtos/estoque | 
+*ProdutoControllerApi* | [**atualizarProduto**](docs/ProdutoControllerApi.md#atualizarProduto) | **PUT** /produtos | 
+*ProdutoControllerApi* | [**cadastrarProduto**](docs/ProdutoControllerApi.md#cadastrarProduto) | **POST** /produtos | 
+*ProdutoControllerApi* | [**detalharProduto**](docs/ProdutoControllerApi.md#detalharProduto) | **GET** /produtos/{id} | 
+*ProdutoControllerApi* | [**listarProdutos**](docs/ProdutoControllerApi.md#listarProdutos) | **GET** /produtos | 
+*ProdutoControllerApi* | [**uploadDeFotoDeProduto**](docs/ProdutoControllerApi.md#uploadDeFotoDeProduto) | **POST** /produtos/foto/{id} | 
+*UsuarioControllerApi* | [**atualizarUsuario**](docs/UsuarioControllerApi.md#atualizarUsuario) | **PUT** /usuarios | 
+*UsuarioControllerApi* | [**detalharUsuario**](docs/UsuarioControllerApi.md#detalharUsuario) | **GET** /usuarios/{id} | 
+*UsuarioControllerApi* | [**listarUsuarios**](docs/UsuarioControllerApi.md#listarUsuarios) | **GET** /usuarios | 
 
 ## Documentation for Models
 

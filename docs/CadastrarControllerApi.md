@@ -4,12 +4,12 @@ All URIs are relative to *http://localhost:8080*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**cadastrar2**](CadastrarControllerApi.md#cadastrar2) | **POST** /cadastrar | 
-[**verificarCadastro**](CadastrarControllerApi.md#verificarCadastro) | **GET** /cadastrar/{uuid} | 
+[**cadastrarUsuario**](CadastrarControllerApi.md#cadastrarUsuario) | **POST** /cadastrar | 
+[**verificarCadastroDeUsuario**](CadastrarControllerApi.md#verificarCadastroDeUsuario) | **GET** /cadastrar/{uuid} | 
 
-<a name="cadastrar2"></a>
-# **cadastrar2**
-> DadosMensagemGenerica cadastrar2(body)
+<a name="cadastrarUsuario"></a>
+# **cadastrarUsuario**
+> DadosMensagemGenerica cadastrarUsuario(body)
 
 
 
@@ -23,10 +23,10 @@ Method | HTTP request | Description
 CadastrarControllerApi apiInstance = new CadastrarControllerApi();
 DadosCadastroUsuario body = new DadosCadastroUsuario(); // DadosCadastroUsuario | 
 try {
-    DadosMensagemGenerica result = apiInstance.cadastrar2(body);
+    DadosMensagemGenerica result = apiInstance.cadastrarUsuario(body);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling CadastrarControllerApi#cadastrar2");
+    System.err.println("Exception when calling CadastrarControllerApi#cadastrarUsuario");
     e.printStackTrace();
 }
 ```
@@ -50,9 +50,9 @@ No authorization required
  - **Content-Type**: application/json
  - **Accept**: */*
 
-<a name="verificarCadastro"></a>
-# **verificarCadastro**
-> Object verificarCadastro(uuid)
+<a name="verificarCadastroDeUsuario"></a>
+# **verificarCadastroDeUsuario**
+> Object verificarCadastroDeUsuario(uuid)
 
 
 
@@ -66,10 +66,10 @@ No authorization required
 CadastrarControllerApi apiInstance = new CadastrarControllerApi();
 String uuid = "uuid_example"; // String | 
 try {
-    Object result = apiInstance.verificarCadastro(uuid);
+    Object result = apiInstance.verificarCadastroDeUsuario(uuid);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling CadastrarControllerApi#verificarCadastro");
+    System.err.println("Exception when calling CadastrarControllerApi#verificarCadastroDeUsuario");
     e.printStackTrace();
 }
 ```

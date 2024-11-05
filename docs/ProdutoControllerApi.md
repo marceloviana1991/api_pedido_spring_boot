@@ -4,16 +4,16 @@ All URIs are relative to *http://localhost:8080*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**adicionarEmEstoque**](ProdutoControllerApi.md#adicionarEmEstoque) | **POST** /produtos/estoque | 
-[**atualizar1**](ProdutoControllerApi.md#atualizar1) | **PUT** /produtos | 
-[**cadastrar**](ProdutoControllerApi.md#cadastrar) | **POST** /produtos | 
-[**detalhar1**](ProdutoControllerApi.md#detalhar1) | **GET** /produtos/{id} | 
-[**listar1**](ProdutoControllerApi.md#listar1) | **GET** /produtos | 
-[**upload**](ProdutoControllerApi.md#upload) | **POST** /produtos/foto/{id} | 
+[**adicionarProdutoEmEstoque**](ProdutoControllerApi.md#adicionarProdutoEmEstoque) | **POST** /produtos/estoque | 
+[**atualizarProduto**](ProdutoControllerApi.md#atualizarProduto) | **PUT** /produtos | 
+[**cadastrarProduto**](ProdutoControllerApi.md#cadastrarProduto) | **POST** /produtos | 
+[**detalharProduto**](ProdutoControllerApi.md#detalharProduto) | **GET** /produtos/{id} | 
+[**listarProdutos**](ProdutoControllerApi.md#listarProdutos) | **GET** /produtos | 
+[**uploadDeFotoDeProduto**](ProdutoControllerApi.md#uploadDeFotoDeProduto) | **POST** /produtos/foto/{id} | 
 
-<a name="adicionarEmEstoque"></a>
-# **adicionarEmEstoque**
-> DadosDetalhamentoProduto adicionarEmEstoque(body)
+<a name="adicionarProdutoEmEstoque"></a>
+# **adicionarProdutoEmEstoque**
+> DadosDetalhamentoProduto adicionarProdutoEmEstoque(body)
 
 
 
@@ -32,10 +32,10 @@ ApiClient defaultClient = Configuration.getDefaultApiClient();
 ProdutoControllerApi apiInstance = new ProdutoControllerApi();
 DadosCadastroProdutoEstoque body = new DadosCadastroProdutoEstoque(); // DadosCadastroProdutoEstoque | 
 try {
-    DadosDetalhamentoProduto result = apiInstance.adicionarEmEstoque(body);
+    DadosDetalhamentoProduto result = apiInstance.adicionarProdutoEmEstoque(body);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling ProdutoControllerApi#adicionarEmEstoque");
+    System.err.println("Exception when calling ProdutoControllerApi#adicionarProdutoEmEstoque");
     e.printStackTrace();
 }
 ```
@@ -59,9 +59,9 @@ Name | Type | Description  | Notes
  - **Content-Type**: application/json
  - **Accept**: */*
 
-<a name="atualizar1"></a>
-# **atualizar1**
-> DadosDetalhamentoProduto atualizar1(body)
+<a name="atualizarProduto"></a>
+# **atualizarProduto**
+> DadosDetalhamentoProduto atualizarProduto(body)
 
 
 
@@ -80,10 +80,10 @@ ApiClient defaultClient = Configuration.getDefaultApiClient();
 ProdutoControllerApi apiInstance = new ProdutoControllerApi();
 DadosAtualizacaoProduto body = new DadosAtualizacaoProduto(); // DadosAtualizacaoProduto | 
 try {
-    DadosDetalhamentoProduto result = apiInstance.atualizar1(body);
+    DadosDetalhamentoProduto result = apiInstance.atualizarProduto(body);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling ProdutoControllerApi#atualizar1");
+    System.err.println("Exception when calling ProdutoControllerApi#atualizarProduto");
     e.printStackTrace();
 }
 ```
@@ -107,9 +107,9 @@ Name | Type | Description  | Notes
  - **Content-Type**: application/json
  - **Accept**: */*
 
-<a name="cadastrar"></a>
-# **cadastrar**
-> DadosDetalhamentoProduto cadastrar(body)
+<a name="cadastrarProduto"></a>
+# **cadastrarProduto**
+> DadosDetalhamentoProduto cadastrarProduto(body)
 
 
 
@@ -128,10 +128,10 @@ ApiClient defaultClient = Configuration.getDefaultApiClient();
 ProdutoControllerApi apiInstance = new ProdutoControllerApi();
 DadosCadastroProduto body = new DadosCadastroProduto(); // DadosCadastroProduto | 
 try {
-    DadosDetalhamentoProduto result = apiInstance.cadastrar(body);
+    DadosDetalhamentoProduto result = apiInstance.cadastrarProduto(body);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling ProdutoControllerApi#cadastrar");
+    System.err.println("Exception when calling ProdutoControllerApi#cadastrarProduto");
     e.printStackTrace();
 }
 ```
@@ -155,9 +155,9 @@ Name | Type | Description  | Notes
  - **Content-Type**: application/json
  - **Accept**: */*
 
-<a name="detalhar1"></a>
-# **detalhar1**
-> DadosDetalhamentoProduto detalhar1(id)
+<a name="detalharProduto"></a>
+# **detalharProduto**
+> DadosDetalhamentoProduto detalharProduto(id)
 
 
 
@@ -176,10 +176,10 @@ ApiClient defaultClient = Configuration.getDefaultApiClient();
 ProdutoControllerApi apiInstance = new ProdutoControllerApi();
 Long id = 789L; // Long | 
 try {
-    DadosDetalhamentoProduto result = apiInstance.detalhar1(id);
+    DadosDetalhamentoProduto result = apiInstance.detalharProduto(id);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling ProdutoControllerApi#detalhar1");
+    System.err.println("Exception when calling ProdutoControllerApi#detalharProduto");
     e.printStackTrace();
 }
 ```
@@ -203,9 +203,9 @@ Name | Type | Description  | Notes
  - **Content-Type**: Not defined
  - **Accept**: */*
 
-<a name="listar1"></a>
-# **listar1**
-> List&lt;DadosDetalhamentoProduto&gt; listar1(pageable)
+<a name="listarProdutos"></a>
+# **listarProdutos**
+> List&lt;DadosDetalhamentoProduto&gt; listarProdutos(pageable)
 
 
 
@@ -224,10 +224,10 @@ ApiClient defaultClient = Configuration.getDefaultApiClient();
 ProdutoControllerApi apiInstance = new ProdutoControllerApi();
 Pageable pageable = new Pageable(); // Pageable | 
 try {
-    List<DadosDetalhamentoProduto> result = apiInstance.listar1(pageable);
+    List<DadosDetalhamentoProduto> result = apiInstance.listarProdutos(pageable);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling ProdutoControllerApi#listar1");
+    System.err.println("Exception when calling ProdutoControllerApi#listarProdutos");
     e.printStackTrace();
 }
 ```
@@ -251,9 +251,9 @@ Name | Type | Description  | Notes
  - **Content-Type**: Not defined
  - **Accept**: */*
 
-<a name="upload"></a>
-# **upload**
-> DadosDetalhamentoProduto upload(id, body)
+<a name="uploadDeFotoDeProduto"></a>
+# **uploadDeFotoDeProduto**
+> DadosDetalhamentoProduto uploadDeFotoDeProduto(id, body)
 
 
 
@@ -273,10 +273,10 @@ ProdutoControllerApi apiInstance = new ProdutoControllerApi();
 Long id = 789L; // Long | 
 FotoIdBody body = new FotoIdBody(); // FotoIdBody | 
 try {
-    DadosDetalhamentoProduto result = apiInstance.upload(id, body);
+    DadosDetalhamentoProduto result = apiInstance.uploadDeFotoDeProduto(id, body);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling ProdutoControllerApi#upload");
+    System.err.println("Exception when calling ProdutoControllerApi#uploadDeFotoDeProduto");
     e.printStackTrace();
 }
 ```

@@ -29,7 +29,7 @@ public class ProdutoController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<DadosDetalhamentoProduto> cadastrar(@Valid @RequestBody DadosCadastroProduto dadosCadastroProduto,
+    public ResponseEntity<DadosDetalhamentoProduto> cadastrarProduto(@Valid @RequestBody DadosCadastroProduto dadosCadastroProduto,
                                               UriComponentsBuilder uriComponentsBuilder, HttpServletRequest request) {
         DadosDetalhamentoProduto dadosDetalhamentoProduto = produtoService.cadastrar(dadosCadastroProduto, request);
         var uri = uriComponentsBuilder.path("/produtos/{id}").buildAndExpand(dadosDetalhamentoProduto.id()).toUri();
@@ -38,7 +38,7 @@ public class ProdutoController {
 
     @PostMapping("/estoque")
     @Transactional
-    public ResponseEntity<DadosDetalhamentoProduto> adicionarEmEstoque(
+    public ResponseEntity<DadosDetalhamentoProduto> adicionarProdutoEmEstoque(
             @Valid @RequestBody DadosCadastroProdutoEstoque dadosCadastroProdutoEstoque) {
         DadosDetalhamentoProduto dadosDetalhamentoProduto = produtoService.adicionarEmEstoque(
                 dadosCadastroProdutoEstoque);
@@ -47,26 +47,26 @@ public class ProdutoController {
 
     @PostMapping("/foto/{id}")
     @Transactional
-    public ResponseEntity<DadosDetalhamentoProduto> upload(@RequestParam MultipartFile foto, @PathVariable Long id) {
+    public ResponseEntity<DadosDetalhamentoProduto> uploadDeFotoDeProduto(@RequestParam MultipartFile foto, @PathVariable Long id) {
         DadosDetalhamentoProduto dadosDetalhamentoProduto = produtoService.adicionarFoto(foto, id);
         return ResponseEntity.ok(dadosDetalhamentoProduto);
     }
 
     @GetMapping
-    public ResponseEntity<List<DadosDetalhamentoProduto>> listar(Pageable pageable) {
+    public ResponseEntity<List<DadosDetalhamentoProduto>> listarProdutos(Pageable pageable) {
         List<DadosDetalhamentoProduto> dadosDetalhamentoProdutoList = produtoService.listar(pageable);
         return ResponseEntity.ok(dadosDetalhamentoProdutoList);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DadosDetalhamentoProduto> detalhar(@PathVariable Long id) {
+    public ResponseEntity<DadosDetalhamentoProduto> detalharProduto(@PathVariable Long id) {
         DadosDetalhamentoProduto dadosDetalhamentoProduto = produtoService.detalhar(id);
         return ResponseEntity.ok(dadosDetalhamentoProduto);
     }
 
     @PutMapping
     @Transactional
-    public ResponseEntity<DadosDetalhamentoProduto> atualizar(
+    public ResponseEntity<DadosDetalhamentoProduto> atualizarProduto(
             @Valid @RequestBody DadosAtualizacaoProduto dadosAtualizacaoProduto, HttpServletRequest request) {
         DadosDetalhamentoProduto dadosDetalhamentoProduto = produtoService.atualizar(dadosAtualizacaoProduto, request);
         return ResponseEntity.ok(dadosDetalhamentoProduto);

@@ -22,20 +22,20 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping
-    public ResponseEntity<List<DadosDetalhamentoUsuario>> listar(Pageable pageable) {
+    public ResponseEntity<List<DadosDetalhamentoUsuario>> listarUsuarios(Pageable pageable) {
         List<DadosDetalhamentoUsuario> dadosDetalhamentoUsuarioList = usuarioService.listar(pageable);
         return ResponseEntity.ok(dadosDetalhamentoUsuarioList);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DadosDetalhamentoUsuario> detalhar(@PathVariable Long id) {
+    public ResponseEntity<DadosDetalhamentoUsuario> detalharUsuario(@PathVariable Long id) {
         DadosDetalhamentoUsuario dadosDetalhamentoUsuario = usuarioService.detalhar(id);
         return ResponseEntity.ok(dadosDetalhamentoUsuario);
     }
 
     @PutMapping
     @Transactional
-    public ResponseEntity<DadosDetalhamentoUsuario> atualizar(@Valid @RequestBody DadosAtualizacaoUsuario
+    public ResponseEntity<DadosDetalhamentoUsuario> atualizarUsuario(@Valid @RequestBody DadosAtualizacaoUsuario
                                                                           dadosAtualizacaoUsuario) {
         DadosDetalhamentoUsuario dadosDetalhamentoUsuario = usuarioService.atualizar(dadosAtualizacaoUsuario);
         return ResponseEntity.ok(dadosDetalhamentoUsuario);

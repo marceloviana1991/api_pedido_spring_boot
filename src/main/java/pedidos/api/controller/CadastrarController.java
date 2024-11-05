@@ -20,7 +20,7 @@ public class CadastrarController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<DadosMensagemGenerica> cadastrar(
+    public ResponseEntity<DadosMensagemGenerica> cadastrarUsuario(
             @Valid @RequestBody DadosCadastroUsuario dadosCadastroUsuario, UriComponentsBuilder uriComponentsBuilder) {
         DadosMensagemGenerica mensagemGenerica = usuarioService.cadastrar(dadosCadastroUsuario, uriComponentsBuilder);
         return ResponseEntity.ok(mensagemGenerica);
@@ -28,7 +28,7 @@ public class CadastrarController {
 
     @GetMapping("/{uuid}")
     @Transactional
-    public ResponseEntity<?> verificarCadastro(@PathVariable String uuid, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<?> verificarCadastroDeUsuario(@PathVariable String uuid, UriComponentsBuilder uriComponentsBuilder) {
         Object verificacao = usuarioService.ativarCadastroUsuario(uuid);
         if (verificacao.getClass().isInstance(DadosDetalhamentoUsuario.class)) {
             DadosDetalhamentoUsuario dadosDetalhamentoUsuario = (DadosDetalhamentoUsuario) verificacao;

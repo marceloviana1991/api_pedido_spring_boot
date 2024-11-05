@@ -25,7 +25,7 @@ public class PedidoController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<DadosDetalhamentoPedido> cadastrar(
+    public ResponseEntity<DadosDetalhamentoPedido> cadastrarPedido(
             @Valid @RequestBody DadosCadastroPedido dadosCadastroPedido , UriComponentsBuilder uriComponentsBuilder,
             HttpServletRequest request) {
         DadosDetalhamentoPedido dadosDetalhamentoPedido = pedidoService.cadastrar(dadosCadastroPedido, request);
@@ -34,20 +34,20 @@ public class PedidoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DadosDetalhamentoPedido>> listar(Pageable pageable) {
+    public ResponseEntity<List<DadosDetalhamentoPedido>> listarPedidos(Pageable pageable) {
         List<DadosDetalhamentoPedido> dadosDetalhamentoPedidoList = pedidoService.listar(pageable);
         return ResponseEntity.ok(dadosDetalhamentoPedidoList);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DadosDetalhamentoPedido> detalhar(@PathVariable Long id, HttpServletRequest request) {
+    public ResponseEntity<DadosDetalhamentoPedido> detalharPedido(@PathVariable Long id, HttpServletRequest request) {
         DadosDetalhamentoPedido dadosDetalhamentoPedido = pedidoService.detalhar(id, request);
         return ResponseEntity.ok(dadosDetalhamentoPedido);
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity<?> excluir(@PathVariable Long id) {
+    public ResponseEntity<?> excluirPedido(@PathVariable Long id) {
         pedidoService.excluir(id);
         return ResponseEntity.noContent().build();
     }

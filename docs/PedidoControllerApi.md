@@ -4,14 +4,14 @@ All URIs are relative to *http://localhost:8080*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**cadastrar1**](PedidoControllerApi.md#cadastrar1) | **POST** /pedidos | 
-[**detalhar2**](PedidoControllerApi.md#detalhar2) | **GET** /pedidos/{id} | 
-[**excluir**](PedidoControllerApi.md#excluir) | **DELETE** /pedidos/{id} | 
-[**listar2**](PedidoControllerApi.md#listar2) | **GET** /pedidos | 
+[**cadastrarPedido**](PedidoControllerApi.md#cadastrarPedido) | **POST** /pedidos | 
+[**detalharPedido**](PedidoControllerApi.md#detalharPedido) | **GET** /pedidos/{id} | 
+[**excluirPedido**](PedidoControllerApi.md#excluirPedido) | **DELETE** /pedidos/{id} | 
+[**listarPedidos**](PedidoControllerApi.md#listarPedidos) | **GET** /pedidos | 
 
-<a name="cadastrar1"></a>
-# **cadastrar1**
-> DadosDetalhamentoPedido cadastrar1(body)
+<a name="cadastrarPedido"></a>
+# **cadastrarPedido**
+> DadosDetalhamentoPedido cadastrarPedido(body)
 
 
 
@@ -30,10 +30,10 @@ ApiClient defaultClient = Configuration.getDefaultApiClient();
 PedidoControllerApi apiInstance = new PedidoControllerApi();
 DadosCadastroPedido body = new DadosCadastroPedido(); // DadosCadastroPedido | 
 try {
-    DadosDetalhamentoPedido result = apiInstance.cadastrar1(body);
+    DadosDetalhamentoPedido result = apiInstance.cadastrarPedido(body);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling PedidoControllerApi#cadastrar1");
+    System.err.println("Exception when calling PedidoControllerApi#cadastrarPedido");
     e.printStackTrace();
 }
 ```
@@ -57,9 +57,9 @@ Name | Type | Description  | Notes
  - **Content-Type**: application/json
  - **Accept**: */*
 
-<a name="detalhar2"></a>
-# **detalhar2**
-> DadosDetalhamentoPedido detalhar2(id)
+<a name="detalharPedido"></a>
+# **detalharPedido**
+> DadosDetalhamentoPedido detalharPedido(id)
 
 
 
@@ -78,10 +78,10 @@ ApiClient defaultClient = Configuration.getDefaultApiClient();
 PedidoControllerApi apiInstance = new PedidoControllerApi();
 Long id = 789L; // Long | 
 try {
-    DadosDetalhamentoPedido result = apiInstance.detalhar2(id);
+    DadosDetalhamentoPedido result = apiInstance.detalharPedido(id);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling PedidoControllerApi#detalhar2");
+    System.err.println("Exception when calling PedidoControllerApi#detalharPedido");
     e.printStackTrace();
 }
 ```
@@ -105,9 +105,9 @@ Name | Type | Description  | Notes
  - **Content-Type**: Not defined
  - **Accept**: */*
 
-<a name="excluir"></a>
-# **excluir**
-> Object excluir(id)
+<a name="excluirPedido"></a>
+# **excluirPedido**
+> Object excluirPedido(id)
 
 
 
@@ -126,10 +126,10 @@ ApiClient defaultClient = Configuration.getDefaultApiClient();
 PedidoControllerApi apiInstance = new PedidoControllerApi();
 Long id = 789L; // Long | 
 try {
-    Object result = apiInstance.excluir(id);
+    Object result = apiInstance.excluirPedido(id);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling PedidoControllerApi#excluir");
+    System.err.println("Exception when calling PedidoControllerApi#excluirPedido");
     e.printStackTrace();
 }
 ```
@@ -153,9 +153,9 @@ Name | Type | Description  | Notes
  - **Content-Type**: Not defined
  - **Accept**: */*
 
-<a name="listar2"></a>
-# **listar2**
-> List&lt;DadosDetalhamentoPedido&gt; listar2(pageable)
+<a name="listarPedidos"></a>
+# **listarPedidos**
+> List&lt;DadosDetalhamentoPedido&gt; listarPedidos(pageable)
 
 
 
@@ -174,10 +174,10 @@ ApiClient defaultClient = Configuration.getDefaultApiClient();
 PedidoControllerApi apiInstance = new PedidoControllerApi();
 Pageable pageable = new Pageable(); // Pageable | 
 try {
-    List<DadosDetalhamentoPedido> result = apiInstance.listar2(pageable);
+    List<DadosDetalhamentoPedido> result = apiInstance.listarPedidos(pageable);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling PedidoControllerApi#listar2");
+    System.err.println("Exception when calling PedidoControllerApi#listarPedidos");
     e.printStackTrace();
 }
 ```

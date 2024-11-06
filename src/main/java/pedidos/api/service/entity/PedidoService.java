@@ -32,7 +32,7 @@ public class PedidoService extends WeakEntityService {
     @Autowired
     private PedidoRepository pedidoRepository;
 
-    public Produto retirarProdutoEmEstoque(Long idProduto, Integer quantidadeRetirada) throws ValidacaoException {
+    public Produto retirarProdutoEmEstoque(Long idProduto, Integer quantidadeRetirada) {
         Produto produto = produtoRepository.getReferenceById(idProduto);
         if (quantidadeRetirada > produto.getQuantidadeEmEstoque()) {
             throw new ValidacaoException("Produto não está disponível em estoque!");
@@ -42,29 +42,28 @@ public class PedidoService extends WeakEntityService {
     }
 
     public List<Item> adicionarItensAoPedido(List<DadosCadastroItem> dadosCadastroItemList, Pedido pedido) {
-        List<Item> ItemList = new ArrayList<>();
+        List<Item> itemList = new ArrayList<>();
         dadosCadastroItemList.forEach(dadosCadastroItem -> {
             Produto produto = retirarProdutoEmEstoque(dadosCadastroItem.idProduto(),
                     dadosCadastroItem.quantidade());
             Item item = new Item(dadosCadastroItem,pedido,produto);
-            itemRepository.save(item);
-            ItemList.add(item);
+            itemList.add(item);
         });
-        return ItemList;
+        return itemList;
     }
 
     public void excluirItensDePedido(Pedido pedido) {
         itemRepository.deleteAllByPedido(pedido);
     }
 
-    public DadosDetalhamentoPedido cadastrar(DadosCadastroPedido dadosCadastroPedido, HttpServletRequest request)
-            throws ValidacaoException {
+    public DadosDetalhamentoPedido cadastrar(DadosCadastroPedido dadosCadastroPedido, HttpServletRequest request) {
         Usuario usuario = capturarUsuarioLogado(request);
         Pedido pedido = new Pedido(usuario);
         List<Item> itemList = adicionarItensAoPedido(dadosCadastroPedido.itens(), pedido);
+        pedidoRepository.save(pedido);
+        itemList.forEach(item -> itemRepository.save(item));
         List<DadosDetalhamentoItem> dadosDetalhamentoItemList = itemList.stream().map(DadosDetalhamentoItem::new)
                 .toList();
-        pedidoRepository.save(pedido);
         return new DadosDetalhamentoPedido(pedido, dadosDetalhamentoItemList);
     }
 
@@ -84,7 +83,7 @@ public class PedidoService extends WeakEntityService {
         return itemRepository.findAllByPedido(pedido);
     }
 
-    public DadosDetalhamentoPedido detalhar(Long id, HttpServletRequest request) throws ValidacaoException {
+    public DadosDetalhamentoPedido detalhar(Long id, HttpServletRequest request) {
         Usuario usuario = capturarUsuarioLogado(request);
         Pedido pedido = pedidoRepository.getReferenceById(id);
         if (!Objects.equals(usuario, pedido.getUsuario()) && usuario.getTipoUsuario() == TipoUsuario.USER) {

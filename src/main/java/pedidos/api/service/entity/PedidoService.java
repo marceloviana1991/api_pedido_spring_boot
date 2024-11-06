@@ -32,7 +32,7 @@ public class PedidoService extends WeakEntityService {
     @Autowired
     private PedidoRepository pedidoRepository;
 
-    public Produto retirarProdutoEmEstoque(Long idProduto, Integer quantidadeRetirada) {
+    public Produto retirarProdutoEmEstoque(Long idProduto, Integer quantidadeRetirada) throws ValidacaoException {
         Produto produto = produtoRepository.getReferenceById(idProduto);
         if (quantidadeRetirada > produto.getQuantidadeEmEstoque()) {
             throw new ValidacaoException("Produto não está disponível em estoque!");
@@ -57,13 +57,14 @@ public class PedidoService extends WeakEntityService {
         itemRepository.deleteAllByPedido(pedido);
     }
 
-    public DadosDetalhamentoPedido cadastrar(DadosCadastroPedido dadosCadastroPedido, HttpServletRequest request) {
+    public DadosDetalhamentoPedido cadastrar(DadosCadastroPedido dadosCadastroPedido, HttpServletRequest request)
+            throws ValidacaoException {
         Usuario usuario = capturarUsuarioLogado(request);
         Pedido pedido = new Pedido(usuario);
-        pedidoRepository.save(pedido);
         List<Item> itemList = adicionarItensAoPedido(dadosCadastroPedido.itens(), pedido);
         List<DadosDetalhamentoItem> dadosDetalhamentoItemList = itemList.stream().map(DadosDetalhamentoItem::new)
                 .toList();
+        pedidoRepository.save(pedido);
         return new DadosDetalhamentoPedido(pedido, dadosDetalhamentoItemList);
     }
 
@@ -83,7 +84,7 @@ public class PedidoService extends WeakEntityService {
         return itemRepository.findAllByPedido(pedido);
     }
 
-    public DadosDetalhamentoPedido detalhar(Long id, HttpServletRequest request) {
+    public DadosDetalhamentoPedido detalhar(Long id, HttpServletRequest request) throws ValidacaoException {
         Usuario usuario = capturarUsuarioLogado(request);
         Pedido pedido = pedidoRepository.getReferenceById(id);
         if (!Objects.equals(usuario, pedido.getUsuario()) && usuario.getTipoUsuario() == TipoUsuario.USER) {

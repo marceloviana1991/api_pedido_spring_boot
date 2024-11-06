@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pedidos.api.dto.pedido.DadosCadastroItem;
 import pedidos.api.dto.pedido.DadosCadastroPedido;
 import pedidos.api.dto.pedido.DadosDetalhamentoItem;
@@ -48,6 +49,7 @@ public class PedidoService extends WeakEntityService {
                     dadosCadastroItem.quantidade());
             Item item = new Item(dadosCadastroItem,pedido,produto);
             itemList.add(item);
+            itemRepository.save(item);
         });
         return itemList;
     }
@@ -56,12 +58,12 @@ public class PedidoService extends WeakEntityService {
         itemRepository.deleteAllByPedido(pedido);
     }
 
+    @Transactional
     public DadosDetalhamentoPedido cadastrar(DadosCadastroPedido dadosCadastroPedido, HttpServletRequest request) {
         Usuario usuario = capturarUsuarioLogado(request);
         Pedido pedido = new Pedido(usuario);
-        List<Item> itemList = adicionarItensAoPedido(dadosCadastroPedido.itens(), pedido);
         pedidoRepository.save(pedido);
-        itemList.forEach(item -> itemRepository.save(item));
+        List<Item> itemList = adicionarItensAoPedido(dadosCadastroPedido.itens(), pedido);
         List<DadosDetalhamentoItem> dadosDetalhamentoItemList = itemList.stream().map(DadosDetalhamentoItem::new)
                 .toList();
         return new DadosDetalhamentoPedido(pedido, dadosDetalhamentoItemList);
@@ -95,6 +97,7 @@ public class PedidoService extends WeakEntityService {
         return new DadosDetalhamentoPedido(pedido, dadosDetalhamentoItemList);
     }
 
+    @Transactional
     public void excluir(Long id) {
         Pedido pedido = pedidoRepository.getReferenceById(id);
         excluirItensDePedido(pedido);

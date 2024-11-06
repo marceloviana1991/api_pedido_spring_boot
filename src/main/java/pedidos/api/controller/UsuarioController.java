@@ -41,7 +41,6 @@ public class UsuarioController {
     }
 
     @PutMapping
-    @Transactional
     public ResponseEntity<DadosDetalhamentoUsuario> atualizarUsuario(@Valid @RequestBody DadosAtualizacaoUsuario
                                                                           dadosAtualizacaoUsuario) {
         DadosDetalhamentoUsuario dadosDetalhamentoUsuario = usuarioService.atualizar(dadosAtualizacaoUsuario);

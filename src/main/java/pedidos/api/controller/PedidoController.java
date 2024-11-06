@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import pedidos.api.dto.DadosMensagemGenerica;
@@ -27,7 +26,6 @@ public class PedidoController {
     private PedidoService pedidoService;
 
     @PostMapping
-    @Transactional
     public ResponseEntity<?> cadastrarPedido(
             @Valid @RequestBody DadosCadastroPedido dadosCadastroPedido , UriComponentsBuilder uriComponentsBuilder,
             HttpServletRequest request) {
@@ -58,7 +56,6 @@ public class PedidoController {
     }
 
     @DeleteMapping("/{id}")
-    @Transactional
     public ResponseEntity<?> excluirPedido(@PathVariable Long id) {
         pedidoService.excluir(id);
         return ResponseEntity.noContent().build();

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 import pedidos.api.dto.DadosMensagemGenerica;
 import pedidos.api.dto.usuario.DadosAtualizacaoUsuario;
@@ -55,6 +56,7 @@ public class UsuarioService {
                         + uri);
     }
 
+    @Transactional
     public DadosDetalhamentoUsuario ativarCadastroUsuario(String uuid) {
         UsuarioVerificador verificador = usuarioVerificadorRepository.findByUuid(UUID.fromString(uuid));
         if (verificador.getDataExpiracao().compareTo(Instant.now()) < 0) {
@@ -66,6 +68,7 @@ public class UsuarioService {
         return new DadosDetalhamentoUsuario(usuario);
     }
 
+    @Transactional
     public void excluirCadastroPendenteExpirado(String uuid) {
         UsuarioVerificador verificador = usuarioVerificadorRepository.findByUuid(UUID.fromString(uuid));
         Usuario usuario = verificador.getUsuario();
@@ -73,6 +76,7 @@ public class UsuarioService {
         usuarioRepository.delete(usuario);
     }
 
+    @Transactional
     public DadosMensagemGenerica cadastrar(DadosCadastroUsuario dadosCadastroUsuario,
                                            UriComponentsBuilder uriComponentsBuilder) {
         Usuario usuario = new Usuario(dadosCadastroUsuario);
@@ -92,6 +96,7 @@ public class UsuarioService {
         return new DadosTokenJWT(tokenJWT);
     }
 
+    @Transactional
     public DadosDetalhamentoUsuario atualizar(DadosAtualizacaoUsuario dadosAtualizacaoUsuario) {
         Usuario usuario = usuarioRepository.getReferenceById(dadosAtualizacaoUsuario.id());
         usuario.atualizarDados(dadosAtualizacaoUsuario);

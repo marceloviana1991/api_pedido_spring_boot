@@ -29,7 +29,6 @@ public class ProdutoController {
     private ProdutoService produtoService;
 
     @PostMapping
-    @Transactional
     public ResponseEntity<DadosDetalhamentoProduto> cadastrarProduto(@Valid @RequestBody DadosCadastroProduto dadosCadastroProduto,
                                               UriComponentsBuilder uriComponentsBuilder, HttpServletRequest request) {
         DadosDetalhamentoProduto dadosDetalhamentoProduto = produtoService.cadastrar(dadosCadastroProduto, request);
@@ -38,7 +37,6 @@ public class ProdutoController {
     }
 
     @PostMapping("/estoque")
-    @Transactional
     public ResponseEntity<DadosDetalhamentoProduto> adicionarProdutoEmEstoque(
             @Valid @RequestBody DadosCadastroProdutoEstoque dadosCadastroProdutoEstoque) {
         DadosDetalhamentoProduto dadosDetalhamentoProduto = produtoService.adicionarEmEstoque(
@@ -47,7 +45,6 @@ public class ProdutoController {
     }
 
     @PostMapping("/foto/{id}")
-    @Transactional
     public ResponseEntity<?> uploadDeFotoDeProduto(@RequestParam MultipartFile foto, @PathVariable Long id) {
         try {
             DadosDetalhamentoProduto dadosDetalhamentoProduto = produtoService.adicionarFoto(foto, id);
@@ -70,7 +67,6 @@ public class ProdutoController {
     }
 
     @PutMapping
-    @Transactional
     public ResponseEntity<DadosDetalhamentoProduto> atualizarProduto(
             @Valid @RequestBody DadosAtualizacaoProduto dadosAtualizacaoProduto, HttpServletRequest request) {
         DadosDetalhamentoProduto dadosDetalhamentoProduto = produtoService.atualizar(dadosAtualizacaoProduto, request);

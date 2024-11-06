@@ -3,7 +3,6 @@ package pedidos.api.controller;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import pedidos.api.dto.DadosMensagemGenerica;
@@ -20,7 +19,6 @@ public class CadastrarController {
     private UsuarioService usuarioService;
 
     @PostMapping
-    @Transactional
     public ResponseEntity<DadosMensagemGenerica> cadastrarUsuario(
             @Valid @RequestBody DadosCadastroUsuario dadosCadastroUsuario, UriComponentsBuilder uriComponentsBuilder) {
         DadosMensagemGenerica mensagemGenerica = usuarioService.cadastrar(dadosCadastroUsuario, uriComponentsBuilder);
@@ -28,7 +26,6 @@ public class CadastrarController {
     }
 
     @GetMapping("/{uuid}")
-    @Transactional
     public ResponseEntity<?> verificarCadastroDeUsuario(@PathVariable String uuid,
                                                         UriComponentsBuilder uriComponentsBuilder) {
         try {

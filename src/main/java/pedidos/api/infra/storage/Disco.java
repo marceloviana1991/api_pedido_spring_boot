@@ -47,9 +47,12 @@ public class Disco {
     public void excluirFoto(String nomeDaFoto) {
         Path diretorioPath = Paths.get(raiz, diretorioFotos);
         File file = new File(diretorioPath + "/" + nomeDaFoto);
-        boolean deleteada = file.delete();
-        if (!deleteada) {
-            throw new ValidacaoException("Falha na substituição da foto!");
-        }
+        new Thread(() -> {
+            boolean deleted = file.delete();
+            if (deleted) {
+                System.out.println("Arquivo excluido com sucesso!");
+            }
+        }).start();
+
     }
 }

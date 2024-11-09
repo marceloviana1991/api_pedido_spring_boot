@@ -23,6 +23,8 @@ public class Produto {
     private String nome;
     private Double valor;
     private Integer quantidadeEmEstoque;
+    @Version
+    private Integer versaoEstoque;
     private LocalDateTime dataDeCadastro;
     @ManyToOne
     @JoinColumn(name = "id_usuario")

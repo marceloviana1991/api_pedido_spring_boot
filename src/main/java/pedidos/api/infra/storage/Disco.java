@@ -1,6 +1,7 @@
 package pedidos.api.infra.storage;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import pedidos.api.infra.exception.ValidacaoException;
@@ -44,15 +45,13 @@ public class Disco {
         return UUID.randomUUID() + extensao;
     }
 
+    @Async
     public void excluirFoto(String nomeDaFoto) {
         Path diretorioPath = Paths.get(raiz, diretorioFotos);
         File file = new File(diretorioPath + "/" + nomeDaFoto);
-        new Thread(() -> {
-            boolean deleted = file.delete();
-            if (deleted) {
-                System.out.println("Arquivo excluido com sucesso!");
-            }
-        }).start();
-
+        boolean deleted = file.delete();
+        if (deleted) {
+            System.out.println("Arquivo excluido com sucesso!");
+        }
     }
 }

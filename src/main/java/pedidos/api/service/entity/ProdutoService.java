@@ -65,11 +65,11 @@ public class ProdutoService extends WeakEntityService {
 
     @Transactional
     public DadosDetalhamentoProduto adicionarFoto(MultipartFile foto, Long id) throws IOException {
-        String nomeDoArquivo = disco.salvarFoto(foto);
         Produto produto = produtoRepository.getReferenceById(id);
         if (produto.getFoto() != null) {
             disco.excluirFoto(produto.getFoto());
         }
+        String nomeDoArquivo = disco.salvarFoto(foto);
         produto.adicionarFoto(nomeDoArquivo);
         return new DadosDetalhamentoProduto(produto);
     }

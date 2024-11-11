@@ -123,4 +123,9 @@ public class UsuarioService {
         Usuario usuario = usuarioRepository.getReferenceById(id);
         return new DadosDetalhamentoUsuario(usuario);
     }
+
+    public void reenviarEmail(Long id, UriComponentsBuilder uriComponentsBuilder) {
+        Usuario usuario = usuarioRepository.getReferenceById(id);
+        enviarEmailDeVerificacao(usuario, uriComponentsBuilder);
+    }
 }

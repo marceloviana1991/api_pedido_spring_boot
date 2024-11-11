@@ -21,17 +21,24 @@ public class CadastrarController {
     @PostMapping
     public ResponseEntity<DadosDetalhamentoUsuario> cadastrarUsuario(
             @Valid @RequestBody DadosCadastroUsuario dadosCadastroUsuario, UriComponentsBuilder uriComponentsBuilder) {
-        DadosDetalhamentoUsuario usuario = usuarioService.cadastrar(dadosCadastroUsuario, uriComponentsBuilder);
-        return ResponseEntity.ok(usuario);
+        DadosDetalhamentoUsuario dadosDetalhamentoUsuario = usuarioService.cadastrar(dadosCadastroUsuario,
+                uriComponentsBuilder);
+        var uri = uriComponentsBuilder.path("/usuarios/{id}").buildAndExpand(dadosDetalhamentoUsuario.id()).toUri();
+        return ResponseEntity.created(uri).body(dadosDetalhamentoUsuario);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DadosDetalhamentoUsuario> reenviarEmail(@PathVariable Long id,
+                                                                  UriComponentsBuilder uriComponentsBuilder) {
+        usuarioService.reenviarEmail(id, uriComponentsBuilder);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{uuid}")
-    public ResponseEntity<?> verificarCadastroDeUsuario(@PathVariable String uuid,
-                                                        UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<?> verificarCadastroDeUsuario(@PathVariable String uuid) {
         try {
             DadosDetalhamentoUsuario dadosDetalhamentoUsuario = usuarioService.ativarCadastroUsuario(uuid);
-            var uri = uriComponentsBuilder.path("/usuarios/{id}").buildAndExpand(dadosDetalhamentoUsuario.id()).toUri();
-            return ResponseEntity.created(uri).body(dadosDetalhamentoUsuario);
+            return ResponseEntity.ok(dadosDetalhamentoUsuario);
         } catch (ValidacaoException validacaoException) {
             usuarioService.excluirCadastroPendenteExpirado(uuid);
             return ResponseEntity.badRequest().body(new DadosMensagemGenerica(validacaoException.getMessage()));

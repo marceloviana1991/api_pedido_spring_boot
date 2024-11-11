@@ -46,12 +46,11 @@ public class UsuarioService {
     @Autowired
     private TokenService tokenService;
 
-
-    public String enviarEmailDeVerificacao(Usuario usuario, UriComponentsBuilder uriComponentsBuilder) {
+    public void enviarEmailDeVerificacao(Usuario usuario, UriComponentsBuilder uriComponentsBuilder) {
         UsuarioVerificador verificador = new UsuarioVerificador(usuario);
         usuarioVerificadorRepository.save(verificador);
         var uri = uriComponentsBuilder.path("/cadastrar/{uuid}").buildAndExpand(verificador.getUuid()).toString();
-        return emailService.enviarEmailTexto(usuario.getEmail(),
+        emailService.enviarEmailTexto(usuario.getEmail(),
                 "Novo usuário cadastradon na API Rest de sistema de gerenciamento de cadastro de pedidos",
                 "Você está recebendo com um path para validação de cadastro "
                         + uri);
@@ -88,11 +87,12 @@ public class UsuarioService {
     }
 
     @Transactional
-    public DadosMensagemGenerica cadastrar(DadosCadastroUsuario dadosCadastroUsuario,
+    public DadosDetalhamentoUsuario cadastrar(DadosCadastroUsuario dadosCadastroUsuario,
                                            UriComponentsBuilder uriComponentsBuilder) {
         Usuario usuario = new Usuario(dadosCadastroUsuario);
         usuarioRepository.save(usuario);
-        return new DadosMensagemGenerica(enviarEmailDeVerificacao(usuario, uriComponentsBuilder));
+        enviarEmailDeVerificacao(usuario, uriComponentsBuilder);
+        return new DadosDetalhamentoUsuario(usuario);
     }
 
     public DadosTokenJWT efetuarLogin(DadosAutenticacaoUsuario dadosAutenticacaoUsuario) {

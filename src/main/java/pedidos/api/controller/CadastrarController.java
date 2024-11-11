@@ -19,10 +19,10 @@ public class CadastrarController {
     private UsuarioService usuarioService;
 
     @PostMapping
-    public ResponseEntity<DadosMensagemGenerica> cadastrarUsuario(
+    public ResponseEntity<DadosDetalhamentoUsuario> cadastrarUsuario(
             @Valid @RequestBody DadosCadastroUsuario dadosCadastroUsuario, UriComponentsBuilder uriComponentsBuilder) {
-        DadosMensagemGenerica mensagemGenerica = usuarioService.cadastrar(dadosCadastroUsuario, uriComponentsBuilder);
-        return ResponseEntity.ok(mensagemGenerica);
+        DadosDetalhamentoUsuario usuario = usuarioService.cadastrar(dadosCadastroUsuario, uriComponentsBuilder);
+        return ResponseEntity.ok(usuario);
     }
 
     @GetMapping("/{uuid}")

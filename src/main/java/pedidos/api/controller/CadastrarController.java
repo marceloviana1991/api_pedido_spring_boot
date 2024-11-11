@@ -26,7 +26,7 @@ public class CadastrarController {
         return ResponseEntity.ok(dadosDetalhamentoUsuario);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/reenviar/{id}")
     public ResponseEntity<DadosDetalhamentoUsuario> reenviarEmail(@PathVariable Long id,
                                                                   UriComponentsBuilder uriComponentsBuilder) {
         usuarioService.reenviarEmail(id, uriComponentsBuilder);
@@ -34,10 +34,13 @@ public class CadastrarController {
     }
 
     @GetMapping("/{uuid}")
-    public ResponseEntity<?> verificarCadastroDeUsuario(@PathVariable String uuid) {
+    public ResponseEntity<?> verificarCadastroDeUsuario(@PathVariable String uuid,
+                                                        UriComponentsBuilder uriComponentsBuilder) {
         try {
             DadosDetalhamentoUsuario dadosDetalhamentoUsuario = usuarioService.ativarCadastroUsuario(uuid);
-            return ResponseEntity.ok(dadosDetalhamentoUsuario);
+            var uri = uriComponentsBuilder.path("/usuarios/{id}").buildAndExpand(dadosDetalhamentoUsuario.id())
+                    .toUri();
+            return ResponseEntity.created(uri).body(dadosDetalhamentoUsuario);
         } catch (ValidacaoException validacaoException) {
             usuarioService.excluirCadastroPendenteExpirado(uuid);
             return ResponseEntity.badRequest().body(new DadosMensagemGenerica(validacaoException.getMessage()));

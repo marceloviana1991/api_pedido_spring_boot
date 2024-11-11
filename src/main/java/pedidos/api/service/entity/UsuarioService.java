@@ -3,6 +3,7 @@ package pedidos.api.service.entity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -74,6 +75,16 @@ public class UsuarioService {
         Usuario usuario = verificador.getUsuario();
         usuarioVerificadorRepository.delete(verificador);
         usuarioRepository.delete(usuario);
+    }
+
+    @Scheduled(cron = "0 15 7 * * *")
+    public void excluirTodosCadastrosPendentes() {
+        List<UsuarioVerificador> verificadorList = usuarioVerificadorRepository.findAll();
+        verificadorList.forEach(verificador -> {
+            Usuario usuario = verificador.getUsuario();
+            usuarioVerificadorRepository.delete(verificador);
+            usuarioRepository.delete(usuario);
+        });
     }
 
     @Transactional

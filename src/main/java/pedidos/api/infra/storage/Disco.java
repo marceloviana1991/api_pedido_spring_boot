@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @Component
 public class Disco {
@@ -22,8 +23,9 @@ public class Disco {
     @Value("${contato.disco.diretorio-fotos}")
     private String diretorioFotos;
 
-    public String salvarFoto(MultipartFile foto) throws IOException {
-        return this.salvar(this.diretorioFotos, foto);
+    @Async
+    public CompletableFuture<String> salvarFoto(MultipartFile foto) throws IOException {
+        return CompletableFuture.completedFuture(salvar(this.diretorioFotos, foto));
     }
 
     public String salvar(String diretorio, MultipartFile arquivo) throws IOException {

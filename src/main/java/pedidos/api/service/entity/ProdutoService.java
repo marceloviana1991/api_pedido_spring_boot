@@ -20,6 +20,8 @@ import pedidos.api.repository.ProdutoRepository;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class ProdutoService extends WeakEntityService {
@@ -69,8 +71,13 @@ public class ProdutoService extends WeakEntityService {
         if (produto.getFoto() != null) {
             disco.excluirFoto(produto.getFoto());
         }
-        String nomeDoArquivo = disco.salvarFoto(foto);
-        produto.adicionarFoto(nomeDoArquivo);
+        var nomeDoArquivo = disco.salvarFoto(foto);
+        CompletableFuture.allOf(nomeDoArquivo).join();
+        try {
+            produto.adicionarFoto(nomeDoArquivo.get());
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
         return new DadosDetalhamentoProduto(produto);
     }
 }

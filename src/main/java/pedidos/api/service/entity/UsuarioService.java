@@ -76,15 +76,7 @@ public class UsuarioService {
         usuarioRepository.delete(usuario);
     }
 
-    @Scheduled(cron = "0 15 7 * * *")
-    public void excluirTodosCadastrosPendentes() {
-        List<UsuarioVerificador> verificadorList = usuarioVerificadorRepository.findAll();
-        verificadorList.forEach(verificador -> {
-            Usuario usuario = verificador.getUsuario();
-            usuarioVerificadorRepository.delete(verificador);
-            usuarioRepository.delete(usuario);
-        });
-    }
+
 
     @Transactional
     public DadosDetalhamentoUsuario cadastrar(DadosCadastroUsuario dadosCadastroUsuario,

@@ -23,8 +23,7 @@ public class CadastrarController {
             @Valid @RequestBody DadosCadastroUsuario dadosCadastroUsuario, UriComponentsBuilder uriComponentsBuilder) {
         DadosDetalhamentoUsuario dadosDetalhamentoUsuario = usuarioService.cadastrar(dadosCadastroUsuario,
                 uriComponentsBuilder);
-        var uri = uriComponentsBuilder.path("/usuarios/{id}").buildAndExpand(dadosDetalhamentoUsuario.id()).toUri();
-        return ResponseEntity.created(uri).body(dadosDetalhamentoUsuario);
+        return ResponseEntity.ok(dadosDetalhamentoUsuario);
     }
 
     @GetMapping("/{id}")

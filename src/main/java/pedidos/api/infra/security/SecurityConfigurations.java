@@ -27,8 +27,8 @@ public class SecurityConfigurations {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
-                    req.requestMatchers(HttpMethod.POST,"/login", "/cadastrar").permitAll();
-                    req.requestMatchers(HttpMethod.GET,"/cadastrar/{uuid}").permitAll();
+                    req.requestMatchers(HttpMethod.POST,"/login", "/cadastrar" ).permitAll();
+                    req.requestMatchers(HttpMethod.GET,"/cadastrar/{uuid}", "/cadastrar/{id}").permitAll();
                     req.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**",
                             "/v3/api-docs.yaml").permitAll();
                     req.requestMatchers(HttpMethod.GET, "/usuarios", "/usuarios/{id}").hasRole("ADMIN");

@@ -7,12 +7,20 @@ Recentemente estava criando um sistema de gerenciamento de pedidos e não soube 
 
 Imagem do projeto representado por DER.
 
-![DER](imagens/der.png)
+![DER](docs/imagens/der.png)
 
 Além do sistema de gerenciamento de pedidos, o código fonte contém:
-- Conceitos de qualidade de software baseados nos princípios SOLID;
-- Sistema de segurança que contém gerenciamento de acesso multicamada com níveis de permissões de acesso diferentes para usuário comum e usuário administrador;
-- Ativação de cadastro por email.
+- Protocolo HTTP aplicado a API Rest
+- Comunicação entre API's via JSON
+- Implementação de sistemas de autenticação via token JWT
+- Controle de acesso multicamada
+- Ativação de cadastro de usuário vinculada a e-mail de confirmação
+- Persistência de dados vinculada a ORM
+- Boas práticas baseadas em conceitos do SOLID
+- Testes unitários automatizados
+- Transferência de arquivos
+- Sincronização de requisições
+- Processamento concorrente
 
 Para implementação do sistema de ativação de usuário por email é necessário ter conta gmail e criar uma senha de app. Essa senha pode ser criada pelo próprio sistema de gerenciamento de contas do google.
 

@@ -107,7 +107,7 @@ public class UsuarioService {
     }
 
     public List<DadosDetalhamentoUsuario> listar(Pageable pageable) {
-        Page<Usuario> usuarioList = usuarioRepository.findAll(pageable);
+        Page<Usuario> usuarioList = usuarioRepository.findAllBySituacaoUsuarioIs(pageable, SituacaoUsuario.ATIVO);
         return usuarioList.stream().map(DadosDetalhamentoUsuario::new).toList();
     }
 

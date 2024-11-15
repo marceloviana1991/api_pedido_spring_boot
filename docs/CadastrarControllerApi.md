@@ -5,11 +5,12 @@ All URIs are relative to *http://localhost:8080*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**cadastrarUsuario**](CadastrarControllerApi.md#cadastrarUsuario) | **POST** /cadastrar | 
+[**reenviarEmail**](CadastrarControllerApi.md#reenviarEmail) | **GET** /cadastrar/reenviar/{id} | 
 [**verificarCadastroDeUsuario**](CadastrarControllerApi.md#verificarCadastroDeUsuario) | **GET** /cadastrar/{uuid} | 
 
 <a name="cadastrarUsuario"></a>
 # **cadastrarUsuario**
-> DadosMensagemGenerica cadastrarUsuario(body)
+> DadosDetalhamentoUsuario cadastrarUsuario(body)
 
 
 
@@ -23,7 +24,7 @@ Method | HTTP request | Description
 CadastrarControllerApi apiInstance = new CadastrarControllerApi();
 DadosCadastroUsuario body = new DadosCadastroUsuario(); // DadosCadastroUsuario | 
 try {
-    DadosMensagemGenerica result = apiInstance.cadastrarUsuario(body);
+    DadosDetalhamentoUsuario result = apiInstance.cadastrarUsuario(body);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling CadastrarControllerApi#cadastrarUsuario");
@@ -39,7 +40,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**DadosMensagemGenerica**](DadosMensagemGenerica.md)
+[**DadosDetalhamentoUsuario**](DadosDetalhamentoUsuario.md)
 
 ### Authorization
 
@@ -48,6 +49,49 @@ No authorization required
 ### HTTP request headers
 
  - **Content-Type**: application/json
+ - **Accept**: */*
+
+<a name="reenviarEmail"></a>
+# **reenviarEmail**
+> DadosDetalhamentoUsuario reenviarEmail(id)
+
+
+
+### Example
+```java
+// Import classes:
+//import io.swagger.client.ApiException;
+//import io.swagger.client.api.CadastrarControllerApi;
+
+
+CadastrarControllerApi apiInstance = new CadastrarControllerApi();
+Long id = 789L; // Long | 
+try {
+    DadosDetalhamentoUsuario result = apiInstance.reenviarEmail(id);
+    System.out.println(result);
+} catch (ApiException e) {
+    System.err.println("Exception when calling CadastrarControllerApi#reenviarEmail");
+    e.printStackTrace();
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **Long**|  |
+
+### Return type
+
+[**DadosDetalhamentoUsuario**](DadosDetalhamentoUsuario.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
  - **Accept**: */*
 
 <a name="verificarCadastroDeUsuario"></a>

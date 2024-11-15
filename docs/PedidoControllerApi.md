@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 <a name="cadastrarPedido"></a>
 # **cadastrarPedido**
-> DadosDetalhamentoPedido cadastrarPedido(body)
+> Object cadastrarPedido(body)
 
 
 
@@ -30,7 +30,7 @@ ApiClient defaultClient = Configuration.getDefaultApiClient();
 PedidoControllerApi apiInstance = new PedidoControllerApi();
 DadosCadastroPedido body = new DadosCadastroPedido(); // DadosCadastroPedido | 
 try {
-    DadosDetalhamentoPedido result = apiInstance.cadastrarPedido(body);
+    Object result = apiInstance.cadastrarPedido(body);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling PedidoControllerApi#cadastrarPedido");
@@ -46,7 +46,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**DadosDetalhamentoPedido**](DadosDetalhamentoPedido.md)
+**Object**
 
 ### Authorization
 

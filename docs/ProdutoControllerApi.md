@@ -253,7 +253,7 @@ Name | Type | Description  | Notes
 
 <a name="uploadDeFotoDeProduto"></a>
 # **uploadDeFotoDeProduto**
-> DadosDetalhamentoProduto uploadDeFotoDeProduto(id, body)
+> Object uploadDeFotoDeProduto(id, body)
 
 
 
@@ -273,7 +273,7 @@ ProdutoControllerApi apiInstance = new ProdutoControllerApi();
 Long id = 789L; // Long | 
 FotoIdBody body = new FotoIdBody(); // FotoIdBody | 
 try {
-    DadosDetalhamentoProduto result = apiInstance.uploadDeFotoDeProduto(id, body);
+    Object result = apiInstance.uploadDeFotoDeProduto(id, body);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling ProdutoControllerApi#uploadDeFotoDeProduto");
@@ -290,7 +290,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**DadosDetalhamentoProduto**](DadosDetalhamentoProduto.md)
+**Object**
 
 ### Authorization
 

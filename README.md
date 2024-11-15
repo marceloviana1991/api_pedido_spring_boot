@@ -31,6 +31,7 @@ All URIs are relative to *http://localhost:8080*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *CadastrarControllerApi* | [**cadastrarUsuario**](docs/CadastrarControllerApi.md#cadastrarUsuario) | **POST** /cadastrar | 
+*CadastrarControllerApi* | [**reenviarEmail**](docs/CadastrarControllerApi.md#reenviarEmail) | **GET** /cadastrar/reenviar/{id} | 
 *CadastrarControllerApi* | [**verificarCadastroDeUsuario**](docs/CadastrarControllerApi.md#verificarCadastroDeUsuario) | **GET** /cadastrar/{uuid} | 
 *LoginControllerApi* | [**efetuarLogin**](docs/LoginControllerApi.md#efetuarLogin) | **POST** /login | 
 *PedidoControllerApi* | [**cadastrarPedido**](docs/PedidoControllerApi.md#cadastrarPedido) | **POST** /pedidos | 
@@ -52,6 +53,7 @@ Class | Method | HTTP request | Description
  - [DadosAtualizacaoProduto](docs/DadosAtualizacaoProduto.md)
  - [DadosAtualizacaoUsuario](docs/DadosAtualizacaoUsuario.md)
  - [DadosAutenticacaoUsuario](docs/DadosAutenticacaoUsuario.md)
+ - [DadosCadastroEndereco](docs/DadosCadastroEndereco.md)
  - [DadosCadastroItem](docs/DadosCadastroItem.md)
  - [DadosCadastroPedido](docs/DadosCadastroPedido.md)
  - [DadosCadastroProduto](docs/DadosCadastroProduto.md)
@@ -61,7 +63,6 @@ Class | Method | HTTP request | Description
  - [DadosDetalhamentoPedido](docs/DadosDetalhamentoPedido.md)
  - [DadosDetalhamentoProduto](docs/DadosDetalhamentoProduto.md)
  - [DadosDetalhamentoUsuario](docs/DadosDetalhamentoUsuario.md)
- - [DadosMensagemGenerica](docs/DadosMensagemGenerica.md)
  - [FotoIdBody](docs/FotoIdBody.md)
  - [Pageable](docs/Pageable.md)
 

@@ -25,6 +25,7 @@ public class Disco {
 
     @Async
     public CompletableFuture<String> salvarFoto(MultipartFile foto) throws IOException {
+        System.out.println("Thread do salvar foto: " + Thread.currentThread().getName());
         return CompletableFuture.completedFuture(salvar(this.diretorioFotos, foto));
     }
 
@@ -49,6 +50,7 @@ public class Disco {
 
     @Async
     public void excluirFoto(String nomeDaFoto) {
+        System.out.println("Thread do excluir foto: " + Thread.currentThread().getName());
         Path diretorioPath = Paths.get(raiz, diretorioFotos);
         File file = new File(diretorioPath + "/" + nomeDaFoto);
         boolean deleted = file.delete();

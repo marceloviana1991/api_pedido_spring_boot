@@ -7,15 +7,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pedidos.api.dto.pedido.DadosCadastroItem;
-import pedidos.api.dto.pedido.DadosCadastroPedido;
-import pedidos.api.dto.pedido.DadosDetalhamentoItem;
-import pedidos.api.dto.pedido.DadosDetalhamentoPedido;
+import pedidos.api.dto.pedido.*;
 import pedidos.api.infra.exception.ValidacaoException;
 import pedidos.api.model.*;
 import pedidos.api.repository.ItemRepository;
 import pedidos.api.repository.PedidoRepository;
 import pedidos.api.repository.ProdutoRepository;
+import pedidos.api.service.viacep.ConsumoViaCepApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +30,9 @@ public class PedidoService extends WeakEntityService {
 
     @Autowired
     private PedidoRepository pedidoRepository;
+
+    @Autowired
+    private ConsumoViaCepApi consumoViaCepApi;
 
     public Produto retirarProdutoEmEstoque(Long idProduto, Integer quantidadeRetirada) {
         Produto produto = produtoRepository.getReferenceById(idProduto);
@@ -60,8 +61,10 @@ public class PedidoService extends WeakEntityService {
 
     @Transactional
     public DadosDetalhamentoPedido cadastrar(DadosCadastroPedido dadosCadastroPedido, HttpServletRequest request) {
+        DadosCadastroEnderencoCompleto dadosCadastroEnderencoCompleto = consumoViaCepApi.obterDados(
+                dadosCadastroPedido.endereco().cep());
         Usuario usuario = capturarUsuarioLogado(request);
-        Pedido pedido = new Pedido(usuario);
+        Pedido pedido = new Pedido(usuario, dadosCadastroEnderencoCompleto, dadosCadastroPedido.endereco());
         pedidoRepository.save(pedido);
         List<Item> itemList = adicionarItensAoPedido(dadosCadastroPedido.itens(), pedido);
         List<DadosDetalhamentoItem> dadosDetalhamentoItemList = itemList.stream().map(DadosDetalhamentoItem::new)

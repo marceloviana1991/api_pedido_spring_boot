@@ -8,6 +8,7 @@ import java.util.List;
 public record DadosCadastroPedido(
         @NotNull
         @NotEmpty
-        List<DadosCadastroItem> itens
+        List<DadosCadastroItem> itens,
+        DadosCadastroEndereco endereco
 ) {
 }

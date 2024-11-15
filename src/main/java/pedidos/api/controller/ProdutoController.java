@@ -46,6 +46,7 @@ public class ProdutoController {
     @PostMapping("/foto/{id}")
     public ResponseEntity<?> uploadDeFotoDeProduto(@RequestParam MultipartFile foto, @PathVariable Long id) {
         try {
+            System.out.println("Thread do controller: " + Thread.currentThread().getName());
             DadosDetalhamentoProduto dadosDetalhamentoProduto = produtoService.adicionarFoto(foto, id);
             return ResponseEntity.ok(dadosDetalhamentoProduto);
         } catch (IOException ioException) {
